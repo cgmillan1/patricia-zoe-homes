@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="description" content="Curated home portfolio for Patricia & Zoe, prepared by Cristian Millan, Real Brokerage Utah" />
+<meta name="theme-color" content="#1a3a3a" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Your home portfolio · curated by Cristian Millan" />
+<meta property="og:description" content="A personalized home-swipe experience prepared by Cristian Millan, Real Brokerage Utah." />
+<meta property="og:image" content="https://cgmillan1.github.io/patricia-zoe-homes/images/house1-1.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:site_name" content="CMR Home Curation" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Your home portfolio · curated by Cristian Millan" />
+<meta name="twitter:description" content="A personalized home-swipe experience prepared by Cristian Millan, Real Brokerage Utah." />
+<meta name="twitter:image" content="https://cgmillan1.github.io/patricia-zoe-homes/images/house1-1.png" />
+<title>Patricia & Zoe · Home Portfolio · Cristian Millan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@tabler/[email protected]/dist/tabler-icons.min.css" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: 'Inter', -apple-system, sans-serif; background: #faf7f0; color: #2d3e2f; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+  @media (min-width: 720px) { body { background: #f0ebe0; } }
+  :root {
+    --font-sans: 'Inter', sans-serif;
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --color-success: #2d6a3a;
+    --color-warning: #c08552;
+    --color-danger: #a83a30;
+    --color-neutral: #8a7c6a;
+    --color-success-bg: #e8f0e4;
+    --color-warning-bg: #fef0eb;
+    --color-danger-bg: #f5e8e4;
+    --text-xs: 10px;
+    --text-sm: 11px;
+    --text-base: 13px;
+    --text-md: 14px;
+    --text-lg: 16px;
+    --text-xl: 19px;
+    --text-2xl: 24px;
+    --text-display: 32px;
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --tap-min: 44px;
+    --focus-ring: 2px solid #c08552;
+    --focus-offset: 2px;
+    --motion-fast: 0.15s;
+    --motion-base: 0.25s;
+    --motion-slow: 0.4s;
+    --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  *:focus { outline: none; }
+  *:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); border-radius: 4px; }
+  button:focus-visible, .lodge-tab:focus-visible, [onclick]:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  }
+  .score-high { background: #2d6a3a; color: #fff; }
+  .score-medium { background: #c08552; color: #fff; }
+  .score-low { background: #8a7c6a; color: #fff; }
+  .score-pill { display: inline-flex; align-items: center; justify-content: center; padding: 3px 7px; border-radius: 10px; font-size: var(--text-xs); font-weight: 700; }
+  .tap-target-44 { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+  .theme-dark { color-scheme: dark; }
+  .theme-dark .lodge-app { background: #1a1a17; color: #e8e4d8; }
+  .theme-dark .lodge-header { border-bottom-color: rgba(232,228,216,0.15); }
+  .theme-dark .lodge-brand { color: #d4a574; }
+  .theme-dark .home-card, .theme-dark .liked-card, .theme-dark .compare-card, .theme-dark .mh-section, .theme-dark .compare-pick, .theme-dark .mh-option, .theme-dark .mh-priority-item, .theme-dark .mh-match-card, .theme-dark .updates-alert { background: #25241e; border-color: rgba(232,228,216,0.12); color: #e8e4d8; }
+  .theme-dark .modal-card { background: #25241e; color: #e8e4d8; }
+  .theme-dark .checklist-title, .theme-dark .modal-title, .theme-dark .liked-price, .theme-dark .compare-card-price, .theme-dark .mh-section-title, .theme-dark .mh-match-address, .theme-dark .compare-results-title { color: #d4a574; }
+  .theme-dark .filter-chip, .theme-dark .toggle-btn, .theme-dark .review-sort-btn { background: #25241e; color: #c8c4b8; border-color: rgba(232,228,216,0.15); }
+  .theme-dark .filter-chip.active, .theme-dark .toggle-btn.active, .theme-dark .review-sort-btn.active { background: #d4a574; color: #1a1a17; }
+  .theme-dark .liked-addr, .theme-dark .compare-card-addr, .theme-dark .mh-priority-weight, .theme-dark .mh-section-link, .theme-dark .compare-card-stat-label, .theme-dark .mh-match-criteria { color: #a8a496; }
+  .theme-dark .modal-textarea, .theme-dark .priority-list { background: #1a1a17; border-color: rgba(232,228,216,0.2); color: #e8e4d8; }
+  .theme-dark .mh-priority-item, .theme-dark .mh-priority-list { background: #1a1a17; }
+  .theme-dark .empty-state, .theme-dark .compare-picker-empty { color: #a8a496; }
+  .theme-dark .lodge-footer { color: #6a6660; border-top-color: rgba(232,228,216,0.1); }
+  .theme-dark .check-row:hover { background: rgba(212,165,116,0.1); }
+  .theme-dark .sync-indicator { background: #25241e; color: #c8c4b8; border-color: rgba(232,228,216,0.15); }
+  .theme-toggle { background: transparent; border: 1px solid rgba(45,62,47,0.2); border-radius: 50%; min-width: 36px; min-height: 36px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; color: #1a3a3a; font-size: 16px; -webkit-tap-highlight-color: transparent; }
+  .theme-dark .theme-toggle { border-color: rgba(232,228,216,0.2); color: #d4a574; }
+  .theme-toggle:active { transform: scale(0.92); }
+  .lodge-app { font-family: var(--font-sans); color: #2d3e2f; background: #faf7f0; min-height: 100vh; padding: 1rem; max-width: 720px; margin: 0 auto; position: relative; }
+  @media (min-width: 720px) { .lodge-app { margin: 20px auto; min-height: calc(100vh - 40px); border-radius: var(--border-radius-lg); box-shadow: 0 4px 24px rgba(45,62,47,0.08); padding: 1.5rem; } }
+  .lodge-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.85rem; border-bottom: 1px solid rgba(45, 62, 47, 0.2); margin-bottom: 1rem; gap: 12px; }
+  .lodge-brand { font-family: var(--font-serif); font-size: 17px; letter-spacing: 1px; color: #1a3a3a; font-weight: 600; line-height: 1.1; }
+  @media (min-width: 480px) { .lodge-brand { font-size: 22px; } }
+  .lodge-brand-sub { font-size: 9px; letter-spacing: 1.5px; color: #8a7c6a; text-transform: uppercase; margin-top: 2px; }
+  @media (min-width: 480px) { .lodge-brand-sub { font-size: 11px; letter-spacing: 2px; } }
+  .lodge-greeting { text-align: right; }
+  .lodge-greeting-name { font-family: var(--font-serif); font-size: 14px; color: #1a3a3a; font-weight: 500; line-height: 1.1; }
+  @media (min-width: 480px) { .lodge-greeting-name { font-size: 17px; } }
+  .lodge-greeting-sub { font-size: 9px; color: #8a7c6a; font-style: italic; }
+  @media (min-width: 480px) { .lodge-greeting-sub { font-size: 11px; } }
+  .lodge-tabs { display: flex; gap: 3px; background: #f0ebe0; padding: 4px; border-radius: var(--border-radius-md); margin-bottom: 0.85rem; border: 1px solid rgba(45, 62, 47, 0.1); }
+  .lodge-tab { flex: 1; min-width: 0; padding: 9px 6px; font-size: 11px; font-weight: 500; text-align: center; color: #5a6a5a; cursor: pointer; border-radius: 6px; transition: all 0.2s; border: none; background: transparent; font-family: inherit; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  @media (min-width: 480px) { .lodge-tab { padding: 9px 10px; font-size: 12px; } }
+  .lodge-tab:hover { background: rgba(26, 58, 58, 0.08); color: #1a3a3a; }
+  .lodge-tab.active { background: #1a3a3a; color: #faf7f0; font-weight: 600; }
+  .lodge-tab-count { display: inline-block; margin-left: 3px; padding: 1px 5px; background: rgba(0,0,0,0.1); border-radius: 8px; font-size: 10px; font-weight: 600; }
+  .lodge-tab.active .lodge-tab-count { background: #d4a574; color: #1a3a3a; }
+  .filter-chips { display: flex; gap: 5px; margin-bottom: 0.85rem; flex-wrap: wrap; }
+  .filter-chip { padding: 6px 10px; font-size: 10px; letter-spacing: 0.3px; text-transform: uppercase; font-weight: 500; background: #fffdf7; border: 1px solid rgba(45, 62, 47, 0.2); color: #5a6a5a; border-radius: 16px; cursor: pointer; transition: all 0.15s; font-family: inherit; flex: 1; min-width: 0; white-space: nowrap; }
+  @media (min-width: 480px) { .filter-chip { padding: 7px 14px; font-size: 11px; flex: none; } }
+  .filter-chip:hover { border-color: #c08552; }
+  .filter-chip.active { background: #1a3a3a; color: #faf7f0; border-color: #1a3a3a; }
+  .filter-chip .chip-count { margin-left: 3px; opacity: 0.7; font-weight: 400; }
+  .toggle-row { display: flex; gap: 4px; background: #f0ebe0; padding: 4px; border-radius: 20px; margin-bottom: 14px; border: 1px solid rgba(45, 62, 47, 0.1); }
+  .toggle-btn { flex: 1; padding: 8px 12px; font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; font-weight: 600; color: #5a6a5a; cursor: pointer; border-radius: 16px; transition: all 0.2s; border: none; background: transparent; font-family: inherit; }
+  .toggle-btn.active.loved { background: #2d6a3a; color: #faf7f0; }
+  .toggle-btn.active.passed { background: #b85a3d; color: #faf7f0; }
+  .lodge-view { display: none; }
+  .lodge-view.active { display: block; animation: view-fade-in 0.22s ease-out; }
+  @keyframes view-fade-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  .lodge-view.active { display: block; }
+  .swipe-stack { position: relative; height: 540px; max-width: 380px; margin: 0 auto; width: 100%; }
+  @media (min-width: 480px) { .swipe-stack { height: 580px; } }
+  .home-card { position: absolute; inset: 0; background: #fffdf7; border: 1px solid rgba(45, 62, 47, 0.2); border-radius: var(--border-radius-lg); overflow: hidden; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s; cursor: grab; box-shadow: 0 2px 8px rgba(45, 62, 47, 0.06); touch-action: pan-y; }
+  .home-card.gone-right { transform: translateX(120%) rotate(20deg); opacity: 0; }
+  .home-card.gone-left { transform: translateX(-120%) rotate(-20deg); opacity: 0; }
+  .home-card.behind { transform: scale(0.95) translateY(8px); opacity: 0.6; }
+  .home-image-wrap { position: relative; height: 220px; background-color: #e8e4d8; overflow: hidden; user-select: none; }
+  @media (min-width: 480px) { .home-image-wrap { height: 260px; } }
+  .home-image { position: absolute; inset: 0; background-size: cover; background-position: center; }
+  .construction-badge { position: absolute; top: 12px; right: 12px; padding: 5px 10px; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; border-radius: 3px; z-index: 4; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+  .construction-badge.new { background: #c08552; color: #fff; }
+  .construction-badge.resale { background: #1a3a3a; color: #d4a574; }
+  .gallery-dots { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 4px; z-index: 2; }
+  .gallery-dot { width: 24px; height: 3px; background: rgba(255,255,255,0.4); border-radius: 2px; transition: background 0.2s; }
+  .gallery-dot.active { background: #fff; }
+  .gallery-nav { position: absolute; top: 0; bottom: 0; width: 35%; cursor: pointer; z-index: 1; }
+  .gallery-nav.prev { left: 0; }
+  .gallery-nav.next { right: 0; }
+  .home-image-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 12px; background: linear-gradient(transparent, rgba(0,0,0,0.85)); z-index: 2; pointer-events: none; }
+  .home-price { font-family: var(--font-serif); font-size: 26px; color: #faf7f0; font-weight: 500; }
+  .home-stamp { position: absolute; padding: 8px 18px; border: 3px solid; border-radius: 4px; font-weight: 700; font-size: 18px; letter-spacing: 2px; opacity: 0; transition: opacity 0.2s; pointer-events: none; z-index: 3; }
+  .home-stamp.like { right: 16px; top: 50px; color: #2d6a3a; border-color: #2d6a3a; transform: rotate(15deg); background: rgba(255,255,255,0.85); }
+  .home-stamp.dislike { left: 16px; top: 16px; color: #b85a3d; border-color: #b85a3d; transform: rotate(-15deg); background: rgba(255,255,255,0.85); }
+  .home-card.show-like .home-stamp.like { opacity: 1; }
+  .home-card.show-dislike .home-stamp.dislike { opacity: 1; }
+  .home-body { padding: 12px 14px; }
+  @media (min-width: 480px) { .home-body { padding: 14px 16px; } }
+  .home-address { font-family: var(--font-serif); font-size: 16px; margin-bottom: 4px; color: #1a3a3a; font-weight: 500; line-height: 1.2; }
+  @media (min-width: 480px) { .home-address { font-size: 17px; } }
+  .home-city { font-size: 10px; color: #8a7c6a; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+  @media (min-width: 480px) { .home-city { font-size: 11px; margin-bottom: 10px; } }
+  .home-specs { display: flex; gap: 10px; padding: 8px 0; border-top: 1px solid rgba(45, 62, 47, 0.15); border-bottom: 1px solid rgba(45, 62, 47, 0.15); margin-bottom: 8px; flex-wrap: wrap; }
+  @media (min-width: 480px) { .home-specs { gap: 12px; padding: 9px 0; margin-bottom: 10px; } }
+  .spec { font-size: 11px; color: #4a5a4a; display: flex; align-items: center; gap: 4px; }
+  .spec i { color: #c08552; font-size: 13px; }
+  .home-features { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+  .feature-tag { font-size: 10px; padding: 3px 8px; background: rgba(192, 133, 82, 0.15); color: #8b5a2b; border-radius: 10px; letter-spacing: 0.5px; font-weight: 500; }
+  .home-actions-row { display: flex; gap: 6px; }
+  .home-link, .home-mort { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #1a3a3a; text-decoration: none; font-weight: 500; padding: 6px 10px; background: #f5f1ea; border-radius: 4px; cursor: pointer; border: none; font-family: inherit; }
+  .home-link:hover, .home-mort:hover { background: #1a3a3a; color: #faf7f0; }
+  .swipe-actions { display: flex; justify-content: center; gap: 18px; margin-top: 14px; padding: 14px; background: #fffdf7; border-radius: var(--border-radius-lg); border: 1px solid rgba(45, 62, 47, 0.15); box-shadow: 0 2px 8px rgba(45, 62, 47, 0.04); }
+  @media (min-width: 480px) { .swipe-actions { gap: 24px; margin-top: 20px; padding: 16px; } }
+  .swipe-btn { width: 60px; height: 60px; border-radius: 50%; border: 2px solid; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 24px; transition: all 0.15s; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  @media (min-width: 480px) { .swipe-btn { width: 64px; height: 64px; font-size: 26px; } }
+  .swipe-btn:active { transform: scale(0.92); }
+  .swipe-btn:hover { transform: translateY(-3px) scale(1.05); }
+  .swipe-btn.dislike { background: #fef0eb; border-color: #b85a3d; color: #b85a3d; }
+  .swipe-btn.dislike:hover { background: #b85a3d; color: #faf7f0; }
+  .swipe-btn.note { background: #fffdf7; border-color: #c08552; color: #8b5a2b; }
+  .swipe-btn.note:hover { background: #c08552; color: #faf7f0; }
+  .swipe-btn.like { background: #ebf5ee; border-color: #2d6a3a; color: #2d6a3a; }
+  .swipe-btn.like:hover { background: #2d6a3a; color: #faf7f0; }
+  .swipe-btn-label { display: block; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; text-align: center; color: #8a7c6a; font-weight: 500; }
+  .swipe-btn-wrap { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .progress-bar { height: 4px; background: rgba(45, 62, 47, 0.15); border-radius: 2px; margin-bottom: 12px; overflow: hidden; }
+  .progress-fill { height: 100%; background: #c08552; transition: width 0.3s; }
+  .empty-state { text-align: center; padding: 60px 20px; color: #8a7c6a; }
+  .empty-state i { font-size: 48px; color: #c08552; margin-bottom: 12px; }
+  .empty-state h3 { font-family: var(--font-serif); color: #1a3a3a; margin: 0 0 8px; font-size: 20px; }
+  .liked-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (min-width: 480px) { .liked-grid { gap: 12px; } }
+  .liked-card { background: #fffdf7; border: 1px solid rgba(45, 62, 47, 0.15); border-radius: var(--border-radius-md); padding: 10px; cursor: pointer; transition: all 0.2s; box-shadow: 0 1px 4px rgba(45, 62, 47, 0.04); position: relative; -webkit-tap-highlight-color: transparent; }
+  @media (min-width: 480px) { .liked-card { padding: 12px; } }
+  .liked-card:active { transform: scale(0.98); }
+  .liked-card.passed { opacity: 0.85; border-left: 3px solid #b85a3d; }
+  .liked-card.loved { border-left: 3px solid #2d6a3a; }
+  .liked-card:hover { border-color: #c08552; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(45, 62, 47, 0.08); }
+  .liked-card.selected { border-color: #1a3a3a; background: #f5f1ea; }
+  .liked-thumb { width: 100%; height: 90px; border-radius: 4px; background-size: cover; background-position: center; margin-bottom: 8px; background-color: #e8e4d8; position: relative; }
+  @media (min-width: 480px) { .liked-thumb { height: 100px; } }
+  .liked-badge { position: absolute; top: 6px; right: 6px; padding: 3px 7px; font-size: 8px; letter-spacing: 0.8px; text-transform: uppercase; font-weight: 700; border-radius: 2px; }
+  .liked-badge.new { background: #c08552; color: #fff; }
+  .liked-badge.resale { background: #1a3a3a; color: #d4a574; }
+  .liked-price { font-family: var(--font-serif); color: #1a3a3a; font-size: 17px; font-weight: 500; }
+  .liked-addr { font-size: 11px; color: #4a5a4a; margin: 2px 0; }
+  .liked-score { font-size: 10px; color: #8a7c6a; }
+  .liked-score .stars { color: #c08552; }
+  .reconsider-btn { font-size: 9px; padding: 4px 8px; background: #2d6a3a; color: #faf7f0; border: none; border-radius: 3px; cursor: pointer; margin-top: 6px; font-family: inherit; letter-spacing: 0.5px; text-transform: uppercase; font-weight: 600; }
+  .reconsider-btn:hover { background: #1f5028; }
+  .mh-container { display: flex; flex-direction: column; gap: 14px; }
+  .mh-wizard { background: linear-gradient(135deg, #1a3a3a 0%, #2d5050 100%); color: #faf7f0; border-radius: 12px; padding: 20px 18px; text-align: center; }
+  .mh-wizard-icon { font-size: 28px; color: #d4a574; margin-bottom: 8px; display: block; }
+  .mh-wizard h3 { font-family: var(--font-serif); font-size: 18px; margin: 0 0 6px; color: #d4a574; font-weight: 500; }
+  .mh-wizard p { font-size: 12px; color: #c8d0c4; line-height: 1.5; margin: 0 0 14px; }
+  .mh-wizard-cta { background: #d4a574; color: #1a3a3a; border: none; padding: 11px 20px; border-radius: 6px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .mh-wizard-cta:active { transform: scale(0.97); }
+  .mh-select-title { font-family: var(--font-serif); color: #1a3a3a; font-size: 16px; font-weight: 500; margin-bottom: 4px; }
+  .mh-select-sub { font-size: 11px; color: #8a7c6a; margin-bottom: 12px; }
+  .mh-select-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .mh-option { background: #fffdf7; border: 1.5px solid rgba(45,62,47,0.15); border-radius: 8px; padding: 10px; cursor: pointer; -webkit-tap-highlight-color: transparent; display: flex; align-items: center; gap: 8px; transition: all 0.15s; }
+  .mh-option:active { transform: scale(0.97); }
+  .mh-option.selected { background: #1a3a3a; border-color: #1a3a3a; color: #d4a574; }
+  .mh-option.selected .mh-option-rank { background: #d4a574; color: #1a3a3a; }
+  .mh-option.disabled { opacity: 0.4; cursor: not-allowed; }
+  .mh-option-icon { font-size: 18px; flex-shrink: 0; }
+  .mh-option-text { font-size: 12px; line-height: 1.2; flex: 1; }
+  .mh-option-rank { width: 20px; height: 20px; background: rgba(192,133,82,0.2); color: #c08552; border-radius: 50%; font-size: 11px; font-weight: 700; display: none; align-items: center; justify-content: center; flex-shrink: 0; }
+  .mh-option.selected .mh-option-rank { display: flex; }
+  .mh-section { background: #fffdf7; border: 1px solid rgba(45,62,47,0.15); border-radius: 10px; padding: 14px; }
+  .mh-section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .mh-section-title { font-family: var(--font-serif); color: #1a3a3a; font-size: 15px; font-weight: 500; }
+  .mh-section-link { font-size: 11px; color: #c08552; cursor: pointer; -webkit-tap-highlight-color: transparent; font-weight: 600; }
+  .mh-section-link:active { opacity: 0.6; }
+  .mh-priority-list { display: flex; flex-direction: column; gap: 6px; }
+  .mh-priority-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: #f5f1ea; border-radius: 6px; }
+  .mh-priority-rank { background: #1a3a3a; color: #d4a574; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+  .mh-priority-rank.gold { background: #c08552; color: #fff; }
+  .mh-priority-text { flex: 1; font-size: 13px; color: #1a3a3a; font-weight: 500; line-height: 1.2; }
+  .mh-priority-weight { font-size: 10px; color: #8a7c6a; }
+  .mh-priority-arrows { display: flex; flex-direction: column; gap: 2px; }
+  .mh-priority-arrows button { min-width: 44px; min-height: 22px; padding: 0; background: rgba(26,58,58,0.15); color: #1a3a3a; border: none; border-radius: 4px; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
+  .mh-priority-arrows button:active { transform: scale(0.9); }
+  .mh-priority-arrows button:disabled { opacity: 0.3; cursor: not-allowed; }
+  .mh-priority-remove { min-width: 44px; min-height: 44px; background: transparent; color: #a83a30; border: none; border-radius: 50%; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; flex-shrink: 0; }
+  .mh-priority-remove:active { background: rgba(168,58,48,0.15); }
+  .mh-match-card { display: flex; align-items: center; gap: 10px; padding: 10px; background: #fffdf7; border: 1px solid rgba(45,62,47,0.12); border-radius: 8px; margin-bottom: 6px; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: all 0.15s; }
+  .mh-match-card:active { transform: scale(0.99); }
+  .mh-match-thumb { width: 50px; height: 50px; background-size: cover; background-position: center; border-radius: 6px; flex-shrink: 0; background-color: #e8e4d8; }
+  .mh-match-info { flex: 1; min-width: 0; }
+  .mh-match-address { font-family: var(--font-serif); color: #1a3a3a; font-size: 13px; font-weight: 600; line-height: 1.2; margin-bottom: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mh-match-criteria { font-size: 9px; line-height: 1.4; color: #5a6a5a; }
+  .mh-match-criteria .yes { color: #2d6a3a; font-weight: 600; margin-right: 5px; }
+  .mh-match-criteria .no { color: #a83a30; opacity: 0.65; margin-right: 5px; }
+  .mh-match-score { padding: 6px 8px; border-radius: 8px; text-align: center; min-width: 46px; }
+  .mh-match-score .num { font-size: 16px; font-weight: 800; line-height: 1; color: #fff; }
+  .mh-match-score .lbl { font-size: 7px; letter-spacing: 0.5px; color: #fff; opacity: 0.85; margin-top: 1px; }
+  .mh-match-score.high { background: #2d6a3a; }
+  .mh-match-score.medium { background: #c08552; }
+  .mh-match-score.low { background: #8a7c6a; }
+  .mh-insight { background: linear-gradient(135deg, #1a3a3a 0%, #2d5050 100%); color: #faf7f0; border-radius: 10px; padding: 14px 16px; position: relative; }
+  .mh-insight-dismiss { position: absolute; top: 6px; right: 6px; min-width: 32px; min-height: 32px; padding: 4px; background: rgba(255,255,255,0.1); border: none; color: #faf7f0; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
+  .mh-insight-header { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; color: #d4a574; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; }
+  .mh-insight-text { font-size: 12px; line-height: 1.5; color: #faf7f0; margin-bottom: 0; }
+  .mh-insight-text b { color: #d4a574; }
+  .home-match-badge { position: absolute; top: 12px; right: 12px; background: rgba(26,58,58,0.92); color: #faf7f0; padding: 6px 10px 6px 8px; border-radius: 20px; font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 4px; z-index: 3; backdrop-filter: blur(8px); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+  .home-match-badge.high { background: rgba(45,106,58,0.92); }
+  .home-match-badge.medium { background: rgba(192,133,82,0.92); }
+  .home-match-badge .star { color: #d4a574; font-size: 11px; }
+  .home-match-badge.high .star { color: #d4a574; }
+  .review-sort { display: flex; gap: 6px; margin-bottom: 12px; }
+  .review-sort-btn { flex: 1; padding: 8px; background: #fffdf7; border: 1px solid rgba(45,62,47,0.2); border-radius: 6px; font-size: 11px; color: #4a5a4a; cursor: pointer; -webkit-tap-highlight-color: transparent; font-family: inherit; letter-spacing: 0.5px; }
+  .review-sort-btn.active { background: #1a3a3a; color: #d4a574; border-color: #1a3a3a; font-weight: 600; }
+  .review-sort-btn:active { transform: scale(0.98); }
+  .card-corner-badge { position: absolute; top: 6px; right: 6px; z-index: 2; }
+  .updated-badge { position: absolute; top: 6px; left: 6px; background: linear-gradient(135deg, #c08552 0%, #d4a574 100%); color: #fff; padding: 4px 8px 4px 6px; border-radius: 12px; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; z-index: 2; display: flex; align-items: center; gap: 3px; box-shadow: 0 2px 6px rgba(192,133,82,0.4); animation: pulse-update 2s ease-in-out infinite; }
+  @keyframes pulse-update { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+  .updated-badge i { font-size: 10px; }
+  .update-banner { background: linear-gradient(135deg, #c08552 0%, #d4a574 100%); color: #fff; border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; }
+  .update-banner-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .update-banner-header i { font-size: 18px; }
+  .update-banner-title { font-family: var(--font-serif); font-size: 15px; font-weight: 600; flex: 1; }
+  .update-banner-date { font-size: 10px; opacity: 0.85; letter-spacing: 0.5px; }
+  .update-changes { list-style: none; padding: 0; margin: 0; }
+  .update-changes li { font-size: 12px; padding: 4px 0; padding-left: 18px; position: relative; line-height: 1.4; }
+  .update-changes li::before { content: '✓'; position: absolute; left: 0; top: 4px; font-weight: 700; color: #fffdf7; }
+  .updates-alert { background: #fffdf7; border: 2px solid #c08552; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; display: flex; align-items: center; gap: 12px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .updates-alert:active { transform: scale(0.99); }
+  .updates-alert-icon { width: 36px; height: 36px; background: linear-gradient(135deg, #c08552 0%, #d4a574 100%); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .updates-alert-text { flex: 1; }
+  .updates-alert-title { font-family: var(--font-serif); color: #1a3a3a; font-size: 14px; font-weight: 600; line-height: 1.2; }
+  .updates-alert-sub { font-size: 11px; color: #8a7c6a; margin-top: 2px; }
+  .updates-alert-arrow { color: #c08552; font-size: 18px; }
+  .modal-backdrop { position: fixed; inset: 0; background: rgba(26, 58, 58, 0.65); z-index: 100; display: none; align-items: flex-end; justify-content: center; padding: 0; }
+  @media (min-width: 480px) { .modal-backdrop { align-items: center; padding: 20px; } }
+  .modal-backdrop.active { display: flex; }
+  .modal-card { background: #fffdf7; border: 2px solid #1a3a3a; border-radius: 16px 16px 0 0; padding: 18px 18px 24px; width: 100%; max-width: 100%; max-height: 92vh; overflow-y: auto; box-shadow: 0 -8px 32px rgba(0,0,0,0.2); animation: slideUp 0.25s ease; }
+  @media (min-width: 480px) { .modal-card { border-radius: var(--border-radius-lg); padding: 20px; max-width: 400px; max-height: 90vh; box-shadow: 0 8px 32px rgba(0,0,0,0.2); animation: none; } }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  .modal-title { font-family: var(--font-serif); color: #1a3a3a; font-size: 17px; margin-bottom: 10px; font-weight: 500; }
+  @media (min-width: 480px) { .modal-title { font-size: 19px; margin-bottom: 12px; } }
+  .modal-textarea { width: 100%; min-height: 80px; background: #faf7f0; border: 1px solid rgba(45, 62, 47, 0.25); border-radius: 4px; padding: 10px; color: #2d3e2f; font-family: inherit; font-size: 13px; resize: vertical; }
+  .score-row { display: flex; gap: 2px; margin: 12px 0; flex-wrap: wrap; justify-content: space-between; }
+  .score-star { font-size: 28px; cursor: pointer; color: #d4cdbe; transition: color 0.1s; padding: 4px 2px; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .score-star.active { color: #c08552; }
+  .room-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 16px; }
+  .room-tag { font-size: 12px; padding: 7px 13px; background: #faf7f0; border: 1px solid rgba(45, 62, 47, 0.25); color: #4a5a4a; border-radius: 14px; cursor: pointer; transition: all 0.15s; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .room-tag:hover { border-color: #c08552; }
+  .room-tag.active { background: #1a3a3a; color: #faf7f0; border-color: #1a3a3a; font-weight: 500; }
+  .modal-btns { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+  .modal-btn { flex: 1; min-width: 90px; padding: 14px 10px; border-radius: 6px; font-family: inherit; font-size: 12px; cursor: pointer; border: 2px solid; letter-spacing: 1px; text-transform: uppercase; font-weight: 600; transition: all 0.15s; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .modal-btn:active { transform: scale(0.97); }
+  .modal-btn.primary { background: #1a3a3a; color: #faf7f0; border-color: #1a3a3a; }
+  .modal-btn.primary:hover { background: #2d5050; }
+  .modal-btn.secondary { background: transparent; color: #4a5a4a; border-color: rgba(45, 62, 47, 0.3); }
+  .modal-btn.secondary:hover { border-color: #c08552; color: #8b5a2b; }
+  .compare-intro { background: linear-gradient(135deg, #1a3a3a 0%, #2d5050 100%); color: #faf7f0; border-radius: 12px; padding: 20px 18px; margin-bottom: 14px; text-align: center; }
+  .compare-intro i { font-size: 32px; color: #d4a574; margin-bottom: 8px; display: block; }
+  .compare-intro h3 { font-family: var(--font-serif); font-size: 18px; margin: 0 0 6px; color: #d4a574; font-weight: 500; }
+  .compare-intro p { font-size: 12px; color: #c8d0c4; line-height: 1.5; margin: 0; max-width: 320px; margin: 0 auto; }
+  .compare-intro.collapsed { display: none; }
+  .compare-picker { margin-bottom: 14px; }
+  .compare-picker-title { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #8a7c6a; margin-bottom: 8px; font-weight: 600; }
+  .compare-picker-empty { background: #fffdf7; border: 1px dashed rgba(45,62,47,0.25); border-radius: 8px; padding: 24px 16px; text-align: center; font-size: 13px; color: #8a7c6a; }
+  .compare-picker-empty i { font-size: 24px; color: #c08552; display: block; margin-bottom: 6px; }
+  .compare-picker-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  @media (min-width: 480px) { .compare-picker-grid { grid-template-columns: repeat(3, 1fr); } }
+  .compare-pick { background: #fffdf7; border: 2px solid rgba(45,62,47,0.15); border-radius: 8px; padding: 8px; cursor: pointer; transition: all 0.15s; position: relative; -webkit-tap-highlight-color: transparent; }
+  .compare-pick:active { transform: scale(0.97); }
+  .compare-pick.selected { border-color: #1a3a3a; background: #f5f1ea; }
+  .compare-pick.selected::after { content: '✓'; position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; background: #1a3a3a; color: #d4a574; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+  .compare-pick.disabled { opacity: 0.4; cursor: not-allowed; }
+  .compare-pick-thumb { width: 100%; height: 70px; border-radius: 4px; background-size: cover; background-position: center; margin-bottom: 6px; background-color: #e8e4d8; }
+  .compare-pick-price { font-family: var(--font-serif); color: #1a3a3a; font-size: 14px; font-weight: 500; line-height: 1; }
+  .compare-pick-addr { font-size: 10px; color: #4a5a4a; margin-top: 3px; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .compare-results { margin-top: 14px; }
+  .compare-results-title { font-family: var(--font-serif); color: #1a3a3a; font-size: 18px; margin-bottom: 4px; font-weight: 500; }
+  .compare-results-sub { font-size: 11px; color: #8a7c6a; margin-bottom: 14px; font-style: italic; }
+  .compare-cards { display: grid; gap: 10px; margin-bottom: 16px; }
+  .compare-cards.cols-2 { grid-template-columns: 1fr 1fr; }
+  .compare-cards.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 600px) { .compare-cards.cols-3 { gap: 6px; } }
+  .compare-card { background: #fffdf7; border: 1px solid rgba(45,62,47,0.2); border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(45,62,47,0.06); position: relative; }
+  .compare-card-img { width: 100%; height: 100px; background-size: cover; background-position: center; background-color: #e8e4d8; position: relative; cursor: pointer; }
+  @media (min-width: 480px) { .compare-card-img { height: 130px; } }
+  .compare-card-remove { position: absolute; top: 6px; right: 6px; min-width: 32px; min-height: 32px; padding: 4px; background: rgba(26,58,58,0.85); color: #faf7f0; border: none; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
+  .compare-card-remove:hover { background: #b85a3d; }
+  .compare-card-badge { position: absolute; bottom: 6px; left: 6px; padding: 3px 8px; font-size: 9px; letter-spacing: 0.5px; text-transform: uppercase; font-weight: 700; border-radius: 3px; }
+  .compare-card-badge.new { background: #c08552; color: #fff; }
+  .compare-card-badge.resale { background: #1a3a3a; color: #d4a574; }
+  .compare-card-body { padding: 10px 8px; }
+  @media (min-width: 480px) { .compare-card-body { padding: 12px 10px; } }
+  .compare-card-price { font-family: var(--font-serif); font-size: 16px; color: #1a3a3a; font-weight: 600; line-height: 1; margin-bottom: 4px; }
+  @media (min-width: 480px) { .compare-card-price { font-size: 19px; } }
+  .compare-card-addr { font-size: 10px; color: #4a5a4a; line-height: 1.3; margin-bottom: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  @media (min-width: 480px) { .compare-card-addr { font-size: 11px; white-space: normal; } }
+  .compare-card-stat { display: flex; justify-content: space-between; padding: 5px 0; font-size: 10px; border-top: 1px solid rgba(45,62,47,0.08); }
+  @media (min-width: 480px) { .compare-card-stat { font-size: 11px; padding: 6px 0; } }
+  .compare-card-stat-group { padding-top: 6px; margin-top: 4px; border-top: 2px solid rgba(45,62,47,0.12); }
+  .compare-card-stat-group:first-of-type { border-top: none; margin-top: 0; padding-top: 0; }
+  .compare-card-stat-group-label { font-size: 8px; letter-spacing: 1px; text-transform: uppercase; color: #8a7c6a; font-weight: 700; margin-bottom: 2px; padding: 0 2px; }
+  .compare-card-stat-label { color: #8a7c6a; }
+  .compare-card-stat-val { color: #1a3a3a; font-weight: 500; text-align: right; }
+  .compare-card-stat-val.winner { color: #2d6a3a; font-weight: 700; }
+  .compare-card-stat-val.winner::after { content: '★'; margin-left: 3px; color: #c08552; }
+  .compare-verdict { background: #fffdf7; border-left: 3px solid #c08552; border-radius: 6px; padding: 14px 16px; margin-bottom: 14px; }
+  .compare-verdict-title { font-family: var(--font-serif); color: #1a3a3a; font-size: 15px; margin-bottom: 10px; font-weight: 500; }
+  .verdict-list { display: grid; gap: 6px; }
+  .verdict-row { display: flex; align-items: center; gap: 10px; font-size: 12px; padding: 6px 0; }
+  .verdict-icon { font-size: 16px; min-width: 22px; text-align: center; }
+  .verdict-text { color: #4a5a4a; flex: 1; }
+  .verdict-text b { color: #1a3a3a; }
+  .compare-actions-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .compare-action-btn { flex: 1; min-width: 120px; padding: 12px; background: #1a3a3a; color: #faf7f0; border: none; border-radius: 6px; font-family: inherit; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; font-weight: 600; -webkit-tap-highlight-color: transparent; transition: all 0.15s; }
+  .compare-action-btn:active { transform: scale(0.97); }
+  .compare-action-btn:hover { background: #2d5050; }
+  .compare-action-btn.secondary { background: transparent; color: #1a3a3a; border: 1px solid #1a3a3a; }
+  .compare-action-btn.secondary:hover { background: #1a3a3a; color: #faf7f0; }
+  .love-toast { position: fixed; bottom: calc(80px + env(safe-area-inset-bottom, 0px)); left: 50%; transform: translateX(-50%) translateY(120px); background: #1a3a3a; color: #faf7f0; padding: 14px 18px; border-radius: 50px; box-shadow: 0 8px 24px rgba(0,0,0,0.25); z-index: 200; display: flex; align-items: center; gap: 12px; font-size: 13px; opacity: 0; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); pointer-events: none; max-width: 92vw; }
+  .love-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; pointer-events: auto; }
+  .love-toast-icon { color: #d4a574; font-size: 18px; }
+  .love-toast-text { flex: 1; line-height: 1.3; }
+  .love-toast-text b { color: #d4a574; }
+  .love-toast-cta { background: #d4a574; color: #1a3a3a; border: none; padding: 7px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; cursor: pointer; -webkit-tap-highlight-color: transparent; white-space: nowrap; }
+  .love-toast-cta:active { transform: scale(0.95); }
+  .compare-suggestion { background: linear-gradient(135deg, #c08552 0%, #d4a574 100%); border-radius: 8px; padding: 12px 14px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .compare-suggestion-text { color: #fffdf7; font-size: 12px; line-height: 1.3; flex: 1; }
+  .compare-suggestion-text b { font-weight: 700; }
+  .compare-suggestion-btn { background: #1a3a3a; color: #d4a574; border: none; padding: 7px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; cursor: pointer; white-space: nowrap; -webkit-tap-highlight-color: transparent; }
+  .compare-suggestion-btn:active { transform: scale(0.95); }
+  .compare-card-note { background: #fef0eb; border-left: 2px solid #c08552; padding: 6px 8px; margin-top: 8px; border-radius: 0 4px 4px 0; font-size: 10px; color: #5a4a30; font-style: italic; line-height: 1.3; }
+  .compare-card-reorder { position: absolute; top: 6px; left: 6px; display: flex; flex-direction: column; gap: 4px; }
+  .compare-card-reorder button { min-width: 32px; min-height: 32px; padding: 4px; background: rgba(26,58,58,0.85); color: #faf7f0; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
+  .compare-card-reorder button:active { transform: scale(0.92); }
+  .compare-card-reorder button:disabled { opacity: 0.3; cursor: not-allowed; }
+  .compare-card-img-counter { position: absolute; bottom: 6px; right: 6px; background: rgba(26,58,58,0.85); color: #faf7f0; padding: 2px 7px; font-size: 9px; font-weight: 600; border-radius: 10px; }
+  .scenarios-section { margin-bottom: 14px; }
+  .scenarios-title { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #8a7c6a; font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; }
+  .scenarios-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .scenario-chip { background: #fffdf7; border: 1px solid rgba(45,62,47,0.2); border-radius: 16px; padding: 6px 10px 6px 12px; font-size: 11px; color: #1a3a3a; display: flex; align-items: center; gap: 6px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .scenario-chip:active { transform: scale(0.96); }
+  .scenario-chip.active { background: #1a3a3a; color: #d4a574; border-color: #1a3a3a; }
+  .scenario-chip-x { min-width: 28px; min-height: 28px; padding: 4px; background: rgba(45,62,47,0.15); border: none; border-radius: 50%; color: #1a3a3a; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .scenario-chip.active .scenario-chip-x { background: rgba(212,165,116,0.3); color: #d4a574; }
+  .save-scenario-btn { background: transparent; border: 1px dashed rgba(45,62,47,0.3); border-radius: 16px; padding: 6px 12px; font-size: 11px; color: #8a7c6a; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .save-scenario-btn:active { transform: scale(0.96); }
+  .realtor-panel { background: #1a3a3a; border-radius: var(--border-radius-md); padding: 14px; margin-bottom: 14px; }
+  @media (min-width: 480px) { .realtor-panel { padding: 16px; margin-bottom: 16px; } }
+  .realtor-panel h3 { font-family: var(--font-serif); color: #d4a574; margin: 0 0 4px; font-size: 16px; font-weight: 500; }
+  @media (min-width: 480px) { .realtor-panel h3 { font-size: 17px; } }
+  .realtor-panel p { font-size: 11px; color: #a8b8a8; margin: 0 0 12px; font-style: italic; }
+  .realtor-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 10px; }
+  @media (min-width: 480px) { .realtor-stats { gap: 8px; margin-bottom: 12px; } }
+  .stat-box { background: rgba(212, 165, 116, 0.15); border: 1px solid rgba(212, 165, 116, 0.3); border-radius: 4px; padding: 8px 6px; text-align: center; }
+  @media (min-width: 480px) { .stat-box { padding: 10px; } }
+  .stat-num { font-family: var(--font-serif); color: #d4a574; font-size: 20px; font-weight: 500; }
+  @media (min-width: 480px) { .stat-num { font-size: 24px; } }
+  .stat-lbl { font-size: 8px; color: #c8d0c4; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+  @media (min-width: 480px) { .stat-lbl { font-size: 9px; } }
+  .export-btn { width: 100%; padding: 12px; background: #d4a574; color: #1a3a3a; border: none; border-radius: 6px; font-family: inherit; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; font-weight: 600; transition: all 0.15s; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .export-btn:active { transform: scale(0.98); }
+  .export-btn:hover { background: #e0b585; }
+  .lodge-footer { margin-top: 16px; padding-top: 12px; border-top: 1px solid rgba(45, 62, 47, 0.15); text-align: center; font-size: 10px; color: #8a7c6a; letter-spacing: 1px; }
+  .reset-link { color: #8a7c6a; cursor: pointer; text-decoration: underline; font-size: 10px; }
+  .reset-link:hover { color: #1a3a3a; }
+  .swipe-hint { text-align: center; font-size: 11px; color: #8a7c6a; margin: 6px 0 4px; letter-spacing: 1px; font-style: italic; }
+  .loading-screen { position: fixed; inset: 0; background: linear-gradient(135deg, #1a3a3a 0%, #0f2828 100%); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.6s ease, visibility 0.6s ease; }
+  .loading-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+  .loading-brand { font-family: var(--font-serif); font-size: 26px; letter-spacing: 3px; color: #d4a574; margin-bottom: 6px; opacity: 0; animation: fadeUp 0.8s ease forwards; }
+  .loading-brand-sub { font-size: 11px; letter-spacing: 4px; color: #a8b8a8; text-transform: uppercase; margin-bottom: 60px; opacity: 0; animation: fadeUp 0.8s 0.2s ease forwards; }
+  .loading-icon-wrap { width: 80px; height: 80px; margin-bottom: 30px; position: relative; opacity: 0; animation: fadeUp 0.8s 0.4s ease forwards; }
+  .loading-icon { width: 100%; height: 100%; }
+  .loading-icon svg { width: 100%; height: 100%; }
+  .loading-house { fill: #d4a574; animation: housePulse 2s ease-in-out infinite; transform-origin: center; }
+  .loading-heart { fill: #c08552; animation: heartBeat 1.4s ease-in-out infinite; transform-origin: center; }
+  .loading-message { font-family: var(--font-serif); font-size: 20px; color: #faf7f0; text-align: center; max-width: 320px; padding: 0 20px; opacity: 0; animation: fadeUp 0.8s 0.6s ease forwards; line-height: 1.4; font-style: italic; }
+  .loading-dots { display: flex; gap: 8px; margin-top: 24px; opacity: 0; animation: fadeUp 0.8s 0.8s ease forwards; }
+  .loading-dot { width: 8px; height: 8px; border-radius: 50%; background: #d4a574; animation: dotPulse 1.4s ease-in-out infinite; }
+  .loading-dot:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dot:nth-child(3) { animation-delay: 0.4s; }
+  .loading-tagline { position: absolute; bottom: 40px; font-size: 10px; letter-spacing: 3px; color: #a8b8a8; text-transform: uppercase; opacity: 0; animation: fadeUp 0.8s 1s ease forwards; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes housePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+  @keyframes heartBeat { 0%, 100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.2); opacity: 1; } }
+  @keyframes dotPulse { 0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; } 40% { transform: scale(1); opacity: 1; } }
+  .sync-indicator { position: fixed; top: 12px; right: 12px; padding: 6px 12px; background: #fffdf7; border: 1px solid rgba(45, 62, 47, 0.2); border-radius: 16px; font-size: 11px; color: #5a6a5a; display: flex; align-items: center; gap: 5px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); z-index: 50; transition: opacity 0.4s ease; }
+  .sync-indicator i { font-size: 13px; }
+  .sync-indicator.syncing { color: #c08552; }
+  .sync-indicator.synced, .sync-indicator.loaded { color: #2d6a3a; }
+  .sync-indicator.error { color: #b85a3d; }
+  .sync-indicator.fade { opacity: 0; pointer-events: none; }
+  .welcome-screen { position: fixed; inset: 0; background: linear-gradient(135deg, #1a3a3a 0%, #0f2828 100%); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 40px 24px; text-align: center; }
+  .welcome-screen.visible { display: flex; }
+  .welcome-brand { font-family: var(--font-serif); font-size: 28px; letter-spacing: 3px; color: #d4a574; margin-bottom: 6px; font-weight: 600; }
+  .welcome-brand-sub { font-size: 11px; letter-spacing: 4px; color: #a8b8a8; text-transform: uppercase; margin-bottom: 50px; }
+  .welcome-icon { width: 70px; height: 70px; margin-bottom: 24px; opacity: 0.9; }
+  .welcome-title { font-family: var(--font-serif); font-size: 26px; color: #faf7f0; margin-bottom: 16px; line-height: 1.3; }
+  .welcome-desc { font-size: 14px; color: #c8d0c4; max-width: 360px; line-height: 1.6; margin-bottom: 28px; }
+  .welcome-form { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 320px; }
+  .welcome-input { width: 100%; padding: 14px 16px; background: rgba(255, 253, 247, 0.1); border: 1px solid rgba(212, 165, 116, 0.4); border-radius: 8px; color: #faf7f0; font-family: inherit; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; text-align: center; }
+  .welcome-input::placeholder { color: rgba(168, 184, 168, 0.6); }
+  .welcome-input:focus { outline: none; border-color: #d4a574; background: rgba(255, 253, 247, 0.15); }
+  .welcome-btn { padding: 14px; background: #d4a574; color: #1a3a3a; border: none; border-radius: 8px; font-family: inherit; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; font-weight: 700; transition: all 0.15s; }
+  .welcome-btn:active { transform: scale(0.97); }
+  .welcome-btn:hover { background: #e0b585; }
+  .welcome-error { color: #f4a89a; font-size: 12px; margin-top: 8px; min-height: 18px; }
+  .welcome-footer { position: absolute; bottom: 30px; font-size: 10px; letter-spacing: 2px; color: #a8b8a8; text-transform: uppercase; }
+  .welcome-contact { color: #d4a574; text-decoration: none; }
+  .undo-row { display: flex; justify-content: center; margin: 8px 0 -4px; min-height: 28px; }
+  .undo-btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; background: transparent; color: #8a7c6a; border: 1px solid rgba(45, 62, 47, 0.2); border-radius: 16px; font-family: inherit; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; font-weight: 500; transition: all 0.15s; opacity: 0; pointer-events: none; transform: translateY(-4px); }
+  .undo-btn.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+  .undo-btn:hover { border-color: #c08552; color: #8b5a2b; background: #fffdf7; }
+  .undo-btn i { font-size: 14px; }
+  .mort-grid { display: grid; gap: 10px; margin: 8px 0 14px; }
+  .mort-row { display: flex; align-items: center; gap: 10px; }
+  .mort-label { font-size: 11px; color: #8a7c6a; min-width: 90px; }
+  .mort-value { font-size: 13px; color: #1a3a3a; font-weight: 500; min-width: 70px; text-align: right; }
+  .mort-slider { flex: 1; -webkit-appearance: none; height: 4px; background: #e8e4d8; border-radius: 2px; outline: none; }
+  .mort-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: #1a3a3a; border-radius: 50%; cursor: pointer; }
+  .mort-slider::-moz-range-thumb { width: 18px; height: 18px; background: #1a3a3a; border-radius: 50%; cursor: pointer; border: none; }
+  .mort-summary { background: #f5f1ea; border-left: 3px solid #c08552; padding: 12px; border-radius: 4px; margin-top: 8px; }
+  .mort-monthly { font-family: var(--font-serif); color: #1a3a3a; font-size: 30px; font-weight: 500; }
+  .mort-monthly-lbl { font-size: 10px; color: #8a7c6a; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
+  .mort-breakdown { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(45, 62, 47, 0.12); }
+  .mort-mini { font-size: 10px; }
+  .mort-mini-lbl { color: #8a7c6a; }
+  .mort-mini-val { color: #1a3a3a; font-weight: 500; font-size: 13px; }
+  .sb240-banner { background: rgba(45,106,58,0.1); border: 1px solid rgba(45,106,58,0.3); border-radius: 8px; padding: 10px 12px; margin-bottom: 12px; font-size: 11px; color: #2d6a3a; line-height: 1.4; }
+  .sb240-banner b { color: #1f5028; }
+</style>
+</head>
+<body>
+
+<div class="sync-indicator fade" id="sync-indicator"></div>
+
+<div class="love-toast" id="love-toast">
+  <span class="love-toast-icon"><i class="ti ti-heart"></i></span>
+  <span class="love-toast-text" id="love-toast-text"></span>
+  <button class="love-toast-cta" onclick="lodgeApp.goToCompare()">Compare</button>
+</div>
+
+<div class="welcome-screen" id="welcome-screen">
+  <div class="welcome-brand">CRISTIAN MILLAN</div>
+  <div class="welcome-brand-sub">Real Brokerage · Utah</div>
+  <svg class="welcome-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#d4a574" d="M50 18 L18 42 L18 80 L42 80 L42 60 L58 60 L58 80 L82 80 L82 42 Z"/>
+    <path fill="#c08552" d="M50 56 C50 56 38 50 38 41 C38 36 41 33 45 33 C47 33 49 34 50 36 C51 34 53 33 55 33 C59 33 62 36 62 41 C62 50 50 56 50 56 Z"/>
+  </svg>
+  <div class="welcome-title">Personal home portfolios<br>for my clients</div>
+  <div class="welcome-desc">Enter your access code to view your curated home selection. Don't have one? Reach out and I'll set you up.</div>
+  <div class="welcome-form">
+    <input type="text" class="welcome-input" id="welcome-code" placeholder="Your access code" maxlength="20" autocomplete="off">
+    <button class="welcome-btn" id="welcome-submit">Open my portfolio</button>
+    <div class="welcome-error" id="welcome-error"></div>
+  </div>
+  <div class="welcome-footer">
+    Cristian Millan · <a href="mailto:cristian.gmillan@gmail.com" class="welcome-contact">cristian.gmillan@gmail.com</a> · (801) 719-4237
+  </div>
+</div>
+
+<div class="loading-screen" id="loading-screen">
+  <div class="loading-brand">CRISTIAN MILLAN</div>
+  <div class="loading-brand-sub">Real Brokerage · Utah</div>
+  <div class="loading-icon-wrap">
+    <div class="loading-icon">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path class="loading-house" d="M50 18 L18 42 L18 80 L42 80 L42 60 L58 60 L58 80 L82 80 L82 42 Z"/>
+        <path class="loading-heart" d="M50 56 C50 56 38 50 38 41 C38 36 41 33 45 33 C47 33 49 34 50 36 C51 34 53 33 55 33 C59 33 62 36 62 41 C62 50 50 56 50 56 Z"/>
+      </svg>
+    </div>
+  </div>
+  <div class="loading-message" id="loading-message">Finding your<br>dream home...</div>
+  <div class="loading-dots"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div>
+  <div class="loading-tagline">Curating your portfolio</div>
+</div>
+
+<div class="lodge-app" id="lodge-app">
+  <div class="lodge-header">
+    <div>
+      <div class="lodge-brand">CRISTIAN MILLAN</div>
+      <div class="lodge-brand-sub">Real Brokerage · Utah</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="lodge-greeting">
+        <div class="lodge-greeting-name" id="client-name-display">Guest</div>
+        <div class="lodge-greeting-sub">Your home journey</div>
+      </div>
+      <button class="theme-toggle" id="theme-toggle" onclick="lodgeApp.toggleTheme()" aria-label="Toggle dark mode"><i class="ti ti-moon" id="theme-icon" aria-hidden="true"></i></button>
+    </div>
+  </div>
+
+  <div class="lodge-tabs">
+    <button class="lodge-tab active" data-tab="discover">Discover</button>
+    <button class="lodge-tab" data-tab="liked">Reviewed <span class="lodge-tab-count" id="count-reviewed">0</span></button>
+    <button class="lodge-tab" data-tab="checklist">Must-Haves</button>
+    <button class="lodge-tab" data-tab="compare">Compare</button>
+  </div>
+
+  <div class="lodge-view active" id="view-discover">
+    <div class="sb240-banner">🏷️ <b>Utah SB 240:</b> Estas casas califican para el incentivo de $20,000 (préstamo diferido al 0% para el enganche, en casas nuevas hasta $450K). Pregúntale a Cristian por los detalles.</div>
+    <div class="filter-chips" id="filter-chips">
+      <button class="filter-chip active" data-filter="all">All <span class="chip-count" id="chip-all">0</span></button>
+      <button class="filter-chip" data-filter="new">New Construction <span class="chip-count" id="chip-new">0</span></button>
+      <button class="filter-chip" data-filter="resale">Resale <span class="chip-count" id="chip-resale">0</span></button>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+    <div class="swipe-stack" id="stack"></div>
+    <div class="swipe-hint">Swipe or tap a button below</div>
+    <div class="undo-row">
+      <button class="undo-btn" id="undo-btn" onclick="lodgeApp.undo()"><i class="ti ti-arrow-back-up"></i> <span id="undo-text">Undo</span></button>
+    </div>
+    <div class="swipe-actions" id="actions" style="display: none;">
+      <div class="swipe-btn-wrap">
+        <button class="swipe-btn dislike" onclick="lodgeApp.swipe('left')" aria-label="Pass"><i class="ti ti-x"></i></button>
+        <span class="swipe-btn-label">Pass</span>
+      </div>
+      <div class="swipe-btn-wrap">
+        <button class="swipe-btn note" onclick="lodgeApp.openNote()" aria-label="Note"><i class="ti ti-edit"></i></button>
+        <span class="swipe-btn-label">Note</span>
+      </div>
+      <div class="swipe-btn-wrap">
+        <button class="swipe-btn like" onclick="lodgeApp.swipe('right')" aria-label="Love"><i class="ti ti-heart"></i></button>
+        <span class="swipe-btn-label">Love</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="lodge-view" id="view-liked">
+    <div class="realtor-panel">
+      <h3>For Cristian's Eyes</h3>
+      <p id="realtor-panel-desc">All reviewed homes — both loved and passed.</p>
+      <div class="realtor-stats">
+        <div class="stat-box"><div class="stat-num" id="stat-loved">0</div><div class="stat-lbl">Loved</div></div>
+        <div class="stat-box"><div class="stat-num" id="stat-passed">0</div><div class="stat-lbl">Passed</div></div>
+        <div class="stat-box"><div class="stat-num" id="stat-budget">$0</div><div class="stat-lbl">Avg Loved</div></div>
+      </div>
+      <button class="export-btn" onclick="lodgeApp.exportPDF()"><i class="ti ti-download"></i> Export client summary (PDF)</button>
+    </div>
+    <div class="toggle-row">
+      <button class="toggle-btn loved active" data-view="loved" onclick="lodgeApp.setReviewView('loved')"><i class="ti ti-heart"></i> Loved</button>
+      <button class="toggle-btn passed" data-view="passed" onclick="lodgeApp.setReviewView('passed')"><i class="ti ti-x"></i> Passed</button>
+    </div>
+    <div class="liked-grid" id="liked-grid"></div>
+  </div>
+
+  <div class="lodge-view" id="view-checklist">
+    <div class="mh-container">
+      <div id="mh-content"></div>
+    </div>
+  </div>
+
+  <div class="lodge-view" id="view-compare">
+    <div class="compare-intro" id="compare-intro">
+      <i class="ti ti-arrows-left-right"></i>
+      <h3>Compare your loved homes</h3>
+      <p>Pick 2-3 homes you love to see them side-by-side. We'll highlight the best in each category so the choice is easy.</p>
+    </div>
+    <div class="compare-picker" id="compare-picker"></div>
+    <div id="compare-area"></div>
+  </div>
+
+  <div class="lodge-footer">CMR HOME CURATION · <span class="reset-link" onclick="lodgeApp.reset()">Reset session</span></div>
+</div>
+
+<div class="modal-backdrop" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-content" onclick="if(event.target===this)lodgeApp.closeModal()">
+  <div class="modal-card" id="modal-content"></div>
+</div>
+
+<script>
+// ============================================================================
+// PATRICIA & ZOE — 13 homes screened for Utah SB 240 ($20K, homes <= $450K)
+// ============================================================================
+const HOMES = [
+  {
+    id: 1, address: '933 W Little Tiger Ct #555', city: 'Saratoga Springs',
+    construction: 'resale', price: 435000, beds: 3, baths: 3, sqft: 2463, lot: 'Townhome',
+    taxRate: 0.0055, hoa: 75,
+    features: ['✅ Califica Utah SB 240 ($20K)', 'Never-occupied (verificar)'],
+    imgs: ['images/house1-1.png', 'images/house1-2.png', 'images/house1-3.png'],
+    url: 'https://www.zillow.com/homedetails/933-W-Little-Tiger-Ct-555-Saratoga-Springs-UT-84045/2054460260_zpid/'
+  },
+  {
+    id: 2, address: '141 N Green River Rd', city: 'Saratoga Springs',
+    construction: 'resale', price: 449990, beds: 3, baths: 3, sqft: 1672, lot: 'Single-family',
+    taxRate: 0.0055, hoa: 75,
+    features: ['✅ Califica Utah SB 240 ($20K)', 'Never-occupied (verificar)'],
+    imgs: ['images/house2-1.png', 'images/house2-2.png', 'images/house2-3.png'],
+    url: 'https://www.zillow.com/homedetails/141-N-Green-River-Rd-Saratoga-Springs-UT-84045/461973473_zpid/'
+  },
+  {
+    id: 3, address: '929 W Havorsen Pkwy #224', city: 'Saratoga Springs',
+    construction: 'resale', price: 414990, beds: 3, baths: 3, sqft: 1826, lot: 'Townhome',
+    taxRate: 0.0055, hoa: 75,
+    features: ['✅ Califica Utah SB 240 ($20K)', 'Never-occupied (verificar)'],
+    imgs: ['images/house3-1.png', 'images/house3-2.png', 'images/house3-3.png'],
+    url: 'https://www.zillow.com/homedetails/929-W-Havorsen-Pkwy-224-Saratoga-Springs-UT-84043/462640149_zpid/'
+  },
+  {
+    id: 4, address: '1341 E Goldie Lou Ln Lot 36', city: 'Eagle Mountain',
+    construction: 'new', price: 358767, beds: 3, baths: 3, sqft: 1775, lot: 'Single-family',
+    taxRate: 0.0055, hoa: 75,
+    features: ['✅ Califica Utah SB 240 ($20K)', 'Construcción nueva'],
+    imgs: ['images/house4-1.png', 'images/house4-2.png', 'images/house4-3.png'],
+    url: 'https://www.zillow.com/homedetails/1341-E-Goldie-Lou-Ln-LOT-36-Eagle-Mountain-UT-84005/462761623_zpid/'
+  },
+  {
+    id: 5, address: '948 S 320 E #199', city: 'Spanish Fork',
+    construction: 'new', price: 398803, beds: 3, baths: 3, sqft: 1813, lot: 'Townhome',
+    taxRate: 0.0055, hoa: 75,
+    features: ['✅ Califica Utah SB 240 ($20K)', 'Construcción nueva'],
+    imgs: ['images/house5-1.png', 'images/house5-2.png', 'images/house5-3.png'],
+    url: 'https://www.zillow.com/homedetails/948-S-320-E-199-Spanish-Fork-UT-84660/462748475_zpid/'
+  },
+  {
+    id: 6, address: '3414 N Browning St #1512', city: 'Eagle Mountain',
+    construction: 'new', price: 449990, beds: 3, baths: 3, sqft: 2339, lot: 'Single-family',
+    taxRate: 0.0055, hoa: 75,
+    features: ['✅ Califica Utah SB 240 ($20K)', 'Construcción nueva'],
+    imgs: ['images/house6-1.png', 'images/house6-2.png', 'images/house6-3.png'],
+    url: 'https://www.zillow.com/homedetails/3414-N-Browning-St-1512-Eagle-Mountain-UT-84005/462743892_zpid/'
+  },
+  {
+    id: 7, address: '363 E Halls Creek Rd', city: 'Saratoga Springs',
+    construction: 'resale', price: 439990, beds: 3, baths: 3, sqft: 1442, lot: 'Single-family',
+    taxRate: 0.0055, hoa: 75,
+    features: ['✅ Califica Utah SB 240 ($20K)', 'Never-occupied (verificar)'],
+    imgs: ['images/house7-1.png', 'images/house7-2.png', 'images/house7-3.png'],
+    url: 'https://www.zillow.com/homedetails/363-E-Halls-Creek-Rd-Saratoga-Springs-UT-84045/462110743_zpid/'
+  },
+  {
+    id: 8, address: '3412 N Willy Way Unit 6', city: 'Eagle Mountain',
+    construction: 'new', price: 317010, beds: 3, baths: 2, sqft: 1277, lot: 'Townhome',
+    taxRate: 0.0055, hoa: 75,
+    features: ['✅ Califica Utah SB 240 ($20K)', 'Construcción nueva'],
+    imgs: ['images/house8-1.png', 'images/house8-2.png', 'images/house8-3.png'],
+    url: 'https://www.zillow.com/homedetails/3412-N-Willy-Way-UNIT-6-Eagle-Mountain-UT-84005/461626799_zpid/'
+  },
+  {
+    id: 9, address: 'Albright plan (Wander)', city: 'Saratoga Springs',
+    construction: 'new', price: 409990, beds: 3, baths: 2, sqft: 1311, lot: 'Townhome',
+    taxRate: 0.0055, hoa: 75,
+    features: ['✅ Califica Utah SB 240 ($20K)', 'D.R. Horton'],
+    imgs: ['images/house9-1.png', 'images/house9-2.png', 'images/house9-3.png'],
+    url: 'https://www.zillow.com/community/wander/456640473_zpid/'
+  },
+  {
+    id: 10, address: 'Harmony Ridge 406', city: 'Lehi area',
+    construction: 'new', price: 433900, beds: 3, baths: 2.5, sqft: 1618, lot: 'Townhome',
+    taxRate: 0.0055, hoa: 75,
+    features: ['✅ Califica Utah SB 240 ($20K)', 'EdgeHomes'],
+    imgs: ['images/house10-1.png', 'images/house10-2.png', 'images/house10-3.png'],
+    url: 'https://www.edgehomes.com/quick_move_ins/harmony-ridge-406/'
+  },
+  {
+    id: 11, address: 'Highridge 674', city: 'Lehi area',
+    construction: 'new', price: 449900, beds: 3, baths: 2.5, sqft: 1647, lot: 'Townhome',
+    taxRate: 0.0055, hoa: 75,
+    features: ['✅ Califica Utah SB 240 ($20K)', 'EdgeHomes'],
+    imgs: ['images/house11-1.png', 'images/house11-2.png', 'images/house11-3.png'],
+    url: 'https://www.edgehomes.com/quick_move_ins/highridge-674/'
+  },
+  {
+    id: 12, address: 'Highgrove A', city: 'American Fork',
+    construction: 'new', price: 456990, beds: 3, baths: 3, sqft: 1827, lot: 'Townhome',
+    taxRate: 0.0055, hoa: 75,
+    features: ['⚠️ Negociar bajo $450K para SB 240', 'Woodside'],
+    imgs: ['images/house12-1.png', 'images/house12-2.png', 'images/house12-3.png'],
+    url: 'https://www.woodsidehomes.com/findmyhome/utah/american-fork/regency-at-meadowbrook/highgrove-a'
+  },
+  {
+    id: 13, address: 'Hillsborough A', city: 'American Fork',
+    construction: 'new', price: 499000, beds: 3, baths: 3, sqft: 2021, lot: 'Townhome',
+    taxRate: 0.0055, hoa: 75,
+    features: ['⚠️ Negociar bajo $450K para SB 240', 'Woodside'],
+    imgs: ['images/house13-1.png', 'images/house13-2.png', 'images/house13-3.png'],
+    url: 'https://www.woodsidehomes.com/findmyhome/utah/american-fork/regency-at-meadowbrook/hillsborough-a'
+  }
+];
+
+const MUST_HAVES_CATALOG = [
+  { id: 'sb240', label: 'Califica SB 240 ($20K)', icon: '🏷️', match: h => h.price <= 450000 },
+  { id: 'new_only', label: 'New construction', icon: '🆕', match: h => h.construction === 'new' },
+  { id: 'singlefam', label: 'Single-family (no townhome)', icon: '🏠', match: h => /single-family/i.test(h.lot || '') },
+  { id: 'under_400k', label: 'Under $400k', icon: '💰', match: h => h.price < 400000 },
+  { id: 'under_450k', label: 'Under $450k', icon: '💰', match: h => h.price < 450000 },
+  { id: 'baths_3plus', label: '3+ bathrooms', icon: '🚿', match: h => h.baths >= 3 },
+  { id: 'sqft_1800', label: '1,800+ sqft', icon: '📐', match: h => h.sqft >= 1800 },
+  { id: 'sqft_2000', label: '2,000+ sqft', icon: '📐', match: h => h.sqft >= 2000 },
+  { id: 'saratoga', label: 'Saratoga Springs only', icon: '🏙️', match: h => /Saratoga Springs/i.test(h.city) },
+  { id: 'eagle', label: 'Eagle Mountain', icon: '🏔️', match: h => /Eagle Mountain/i.test(h.city) },
+  { id: 'low_payment', label: 'Pago bajo (under $3,100)', icon: '💵', match: h => h.price <= 410000 },
+  { id: 'modern', label: 'New / never-occupied', icon: '✨', match: h => h.construction === 'new' }
+];
+
+const MUST_HAVES = MUST_HAVES_CATALOG.map(m => m.label);
+const ROOMS = ['Kitchen', 'Master Suite', 'Living Room', 'Backyard', 'Office', 'Basement', 'Garage', 'Bathroom'];
+const STORAGE_KEY = 'patricia_zoe_homes_v1';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyChX2Q6q-pZr7xHDnG31Xr0hLiItQn5m-0",
+  authDomain: "cmr-home-portfolio.firebaseapp.com",
+  databaseURL: "https://cmr-home-portfolio-default-rtdb.firebaseio.com",
+  projectId: "cmr-home-portfolio",
+  storageBucket: "cmr-home-portfolio.firebasestorage.app",
+  messagingSenderId: "872375961631",
+  appId: "1:872375961631:web:4834df880c9ea45ca0ad2a"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+const urlParams = new URLSearchParams(window.location.search);
+const CLIENT_CODE = (urlParams.get('id') || '').toUpperCase().trim();
+
+const CLIENT_NAMES = {
+  'PAT2026': 'Patricia',
+  'ZOE2026': 'Zoe',
+  'DEMO': 'Demo Client'
+};
+
+const CLIENT_NAME = CLIENT_NAMES[CLIENT_CODE] || 'Guest';
+
+const SHEETS_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbwBVU7QgVZiu6sPpkCzVEuTLANb2tY2KD7j1TIXwUgEYGtGGX2-B62YaftvWgPMQlVk/exec';
+
+function syncToSheet(action, homeId, extra = {}) {
+  if (!SHEETS_WEBHOOK_URL || !CLIENT_CODE) return;
+  const home = HOMES.find(h => h.id === homeId);
+  if (!home) return;
+  const payload = {
+    action: action, clientCode: CLIENT_CODE, clientName: CLIENT_NAME, homeId: homeId,
+    address: home.address, city: home.city, price: home.price,
+    type: home.construction === 'new' ? 'New Construction' : 'Resale',
+    score: extra.score || state.scores[homeId] || '',
+    rooms: extra.rooms || (state.rooms[homeId] ? state.rooms[homeId].join(', ') : ''),
+    notes: extra.notes || state.notes[homeId] || ''
+  };
+  fetch(SHEETS_WEBHOOK_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) }).catch(err => console.log('Sheets sync failed (non-blocking):', err));
+}
+
+function showSyncStatus(status) {
+  const indicator = el('sync-indicator');
+  if (!indicator) return;
+  indicator.className = 'sync-indicator ' + status;
+  if (status === 'syncing') indicator.innerHTML = '<i class="ti ti-cloud-upload"></i> Saving...';
+  else if (status === 'synced') indicator.innerHTML = '<i class="ti ti-cloud-check"></i> Saved';
+  else if (status === 'error') indicator.innerHTML = '<i class="ti ti-cloud-off"></i> Offline';
+  else if (status === 'loaded') indicator.innerHTML = '<i class="ti ti-cloud-check"></i> Loaded';
+  if (status === 'synced' || status === 'loaded') setTimeout(() => indicator.classList.add('fade'), 1500);
+}
+
+const state = { liked: [], disliked: [], notes: {}, scores: {}, rooms: {}, mustHaves: {}, priorities: [], dismissedInsights: {}, seenUpdates: {}, reviewSort: 'recent', compareIds: [], scenarios: {}, filter: 'all', reviewView: 'loved', viewedIds: [], galleryIdx: {}, compareImgIdx: {}, lastAction: null };
+
+let saveTimeout = null;
+let firebaseLoaded = false;
+
+function load() {
+  try { const v = localStorage.getItem(STORAGE_KEY); if (v) Object.assign(state, JSON.parse(v)); } catch (e) {}
+  if (!CLIENT_CODE) return;
+  showSyncStatus('syncing');
+  db.ref('clients/' + CLIENT_CODE).once('value').then(snap => {
+    const data = snap.val();
+    if (data) {
+      Object.assign(state, data);
+      renderStack(); renderReview(); renderChecklist();
+      updateCounts(); updateChipCounts(); updateUndoBtn();
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.toggle('active', c.dataset.filter === state.filter));
+      document.querySelectorAll('.toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.view === state.reviewView));
+    }
+    firebaseLoaded = true;
+    showSyncStatus('loaded');
+  }).catch(err => { console.log('Firebase load failed:', err); firebaseLoaded = true; showSyncStatus('error'); });
+
+  db.ref('clients/' + CLIENT_CODE).on('value', snap => {
+    if (!firebaseLoaded) return;
+    const data = snap.val();
+    if (!data) return;
+    const currentJson = JSON.stringify({ liked: state.liked, disliked: state.disliked, scores: state.scores, notes: state.notes, rooms: state.rooms, mustHaves: state.mustHaves, viewedIds: state.viewedIds });
+    const remoteJson = JSON.stringify({ liked: data.liked || [], disliked: data.disliked || [], scores: data.scores || {}, notes: data.notes || {}, rooms: data.rooms || {}, mustHaves: data.mustHaves || {}, viewedIds: data.viewedIds || [] });
+    if (currentJson !== remoteJson) {
+      Object.assign(state, data);
+      renderStack(); renderReview(); renderChecklist();
+      updateCounts(); updateChipCounts(); updateUndoBtn();
+    }
+  });
+}
+
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  if (!CLIENT_CODE) return;
+  if (saveTimeout) clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(() => {
+    showSyncStatus('syncing');
+    const payload = {
+      liked: state.liked || [], disliked: state.disliked || [], notes: state.notes || {}, scores: state.scores || {},
+      rooms: state.rooms || {}, mustHaves: state.mustHaves || {}, priorities: state.priorities || [],
+      dismissedInsights: state.dismissedInsights || {}, seenUpdates: state.seenUpdates || {}, reviewSort: state.reviewSort || 'recent',
+      compareIds: state.compareIds || [], scenarios: state.scenarios || {}, filter: state.filter || 'all',
+      reviewView: state.reviewView || 'loved', viewedIds: state.viewedIds || [], galleryIdx: state.galleryIdx || {},
+      lastAction: state.lastAction || null, lastUpdated: firebase.database.ServerValue.TIMESTAMP, clientName: CLIENT_NAME
+    };
+    db.ref('clients/' + CLIENT_CODE).set(payload).then(() => showSyncStatus('synced')).catch(err => { console.log('Firebase save failed:', err); showSyncStatus('error'); });
+  }, 400);
+}
+
+const el = (id) => document.getElementById(id);
+const fmtPrice = (p) => '$' + (p / 1000).toFixed(0) + 'k';
+const fmtFull = (p) => '$' + Math.round(p).toLocaleString();
+
+// ---- Placeholder image generator (Forest Lodge themed, no external files) ----
+const IMG_PALETTES = [
+  ['#1a3a3a', '#2d5050'], ['#2d5050', '#3a6363'], ['#c08552', '#a86f42'],
+  ['#1f4040', '#356060'], ['#8b5a2b', '#a86f42'], ['#234545', '#2d5050'],
+  ['#3a6363', '#1a3a3a'], ['#a86f42', '#c08552']
+];
+const IMG_LABELS = ['Exterior', 'Interior', 'Kitchen'];
+function homeImg(h, idx) {
+  idx = idx || 0;
+  const pal = IMG_PALETTES[(h.id + idx) % IMG_PALETTES.length];
+  const label = IMG_LABELS[idx % IMG_LABELS.length];
+  const price = '$' + Math.round(h.price).toLocaleString();
+  const addr = (h.address || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const city = (h.city || '').replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'>
+    <defs>
+      <linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
+        <stop offset='0' stop-color='${pal[0]}'/><stop offset='1' stop-color='${pal[1]}'/>
+      </linearGradient>
+      <pattern id='dots' width='40' height='40' patternUnits='userSpaceOnUse'>
+        <circle cx='4' cy='4' r='1.5' fill='rgba(255,255,255,0.06)'/>
+      </pattern>
+    </defs>
+    <rect width='800' height='600' fill='url(#g)'/>
+    <rect width='800' height='600' fill='url(#dots)'/>
+    <g transform='translate(400,210)' fill='none' stroke='#d4a574' stroke-width='9' stroke-linejoin='round' stroke-linecap='round'>
+      <path d='M-78 6 L0 -64 L78 6'/>
+      <path d='M-58 -8 L-58 70 L-20 70 L-20 28 L20 28 L20 70 L58 70 L58 -8'/>
+    </g>
+    <text x='400' y='360' fill='#d4a574' font-family='Georgia, serif' font-size='30' font-weight='600' text-anchor='middle'>${price}</text>
+    <text x='400' y='405' fill='#f7f3ea' font-family='Inter, Arial, sans-serif' font-size='24' font-weight='600' text-anchor='middle'>${addr}</text>
+    <text x='400' y='436' fill='rgba(247,243,234,0.75)' font-family='Inter, Arial, sans-serif' font-size='17' letter-spacing='2' text-anchor='middle'>${city.toUpperCase()}</text>
+    <rect x='340' y='474' width='120' height='30' rx='15' fill='rgba(212,165,116,0.18)' stroke='rgba(212,165,116,0.5)'/>
+    <text x='400' y='494' fill='#d4a574' font-family='Inter, Arial, sans-serif' font-size='13' letter-spacing='2' text-anchor='middle'>${label.toUpperCase()}</text>
+  </svg>`;
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+}
+
+function calcMortgage(price, downPct, rate, years) {
+  const dp = price * (downPct / 100);
+  const principal = price - dp;
+  const r = rate / 100 / 12;
+  const n = years * 12;
+  const pi = principal * (r * Math.pow(1+r, n)) / (Math.pow(1+r, n) - 1);
+  return { dp, principal, pi, n };
+}
+
+function getQueue() {
+  return HOMES.filter(h => {
+    if (state.viewedIds.includes(h.id)) return false;
+    if (state.filter === 'new') return h.construction === 'new';
+    if (state.filter === 'resale') return h.construction === 'resale';
+    return true;
+  });
+}
+
+function updateChipCounts() {
+  const unviewed = HOMES.filter(h => !state.viewedIds.includes(h.id));
+  el('chip-all').textContent = unviewed.length;
+  el('chip-new').textContent = unviewed.filter(h => h.construction === 'new').length;
+  el('chip-resale').textContent = unviewed.filter(h => h.construction === 'resale').length;
+}
+
+function renderStack() {
+  const stack = el('stack');
+  const queue = getQueue();
+  if (queue.length === 0) {
+    const filterLabel = state.filter === 'all' ? '' : (state.filter === 'new' ? 'new construction ' : 'resale ');
+    const lovedCount = state.liked.length;
+    const passedCount = state.disliked.length;
+    let ctaHTML = '';
+    if (lovedCount > 0) ctaHTML += `<button class="modal-btn primary" style="margin-top:14px" onclick="lodgeApp.goToReview('loved')"><i class="ti ti-heart" aria-hidden="true"></i> Review ${lovedCount} loved home${lovedCount === 1 ? '' : 's'}</button>`;
+    if (passedCount > 0 && state.filter === 'all') ctaHTML += `<button class="modal-btn secondary" style="margin-top:8px;background:transparent;color:#1a3a3a;border:1px solid #1a3a3a" onclick="lodgeApp.goToReview('passed')"><i class="ti ti-rotate" aria-hidden="true"></i> Reconsider passed (${passedCount})</button>`;
+    if (state.filter !== 'all') ctaHTML += `<button class="modal-btn secondary" style="margin-top:14px;background:transparent;color:#1a3a3a;border:1px solid #1a3a3a" onclick="document.querySelector('.filter-chip[data-filter=all]').click()">Show all homes</button>`;
+    stack.innerHTML = `<div class="empty-state"><i class="ti ti-confetti" aria-hidden="true"></i><h3>${filterLabel ? `No more ${filterLabel}homes` : "You've seen them all!"}</h3><p>${filterLabel ? 'Switch filter to see other homes.' : 'Time to make decisions. What next?'}</p><div style="max-width:280px;margin:14px auto 0;display:flex;flex-direction:column;gap:8px">${ctaHTML}</div></div>`;
+    el('actions').style.display = 'none';
+    el('progress').style.width = '100%';
+    return;
+  }
+  el('actions').style.display = 'flex';
+  const totalInFilter = HOMES.filter(h => state.filter === 'all' || h.construction === state.filter).length;
+  const reviewedInFilter = totalInFilter - queue.length;
+  el('progress').style.width = totalInFilter ? ((reviewedInFilter / totalInFilter) * 100) + '%' : '0%';
+  stack.innerHTML = queue.slice(0, 3).reverse().map((h, i, arr) => {
+    const isTop = i === arr.length - 1;
+    const gIdx = state.galleryIdx[h.id] || 0;
+    const dots = h.imgs.map((_, di) => `<div class="gallery-dot ${di === gIdx ? 'active' : ''}"></div>`).join('');
+    const badge = h.construction === 'new' ? '<div class="construction-badge new">New Build</div>' : '<div class="construction-badge resale">Resale</div>';
+    const matchScore = calcMatchScore(h);
+    const matchBadgeHTML = (matchScore !== null) ? `<div class="home-match-badge ${getMatchScoreClass(matchScore)}" onclick="event.stopPropagation();lodgeApp.showMatchDetail(${h.id})"><span class="star">★</span> ${matchScore}% match</div>` : '';
+    return `<div class="home-card ${!isTop ? 'behind' : ''}" data-id="${h.id}" style="z-index:${i+1}">
+      <div class="home-stamp like">LOVE</div>
+      <div class="home-stamp dislike">PASS</div>
+      <div class="home-image-wrap">
+        <div class="home-image" style="background-image:url(&quot;${homeImg(h, gIdx)}&quot;)"></div>
+        ${badge}
+        ${matchBadgeHTML}
+        <div class="gallery-dots">${dots}</div>
+        <div class="gallery-nav prev" role="button" aria-label="Previous photo" tabindex="0" onclick="event.stopPropagation();lodgeApp.galleryNav(${h.id},-1)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();lodgeApp.galleryNav(${h.id},-1)}"></div>
+        <div class="gallery-nav next" role="button" aria-label="Next photo" tabindex="0" onclick="event.stopPropagation();lodgeApp.galleryNav(${h.id},1)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();lodgeApp.galleryNav(${h.id},1)}"></div>
+        <div class="home-image-overlay"><div class="home-price">${fmtFull(h.price)}</div></div>
+      </div>
+      <div class="home-body">
+        <div class="home-address">${h.address}</div>
+        <div class="home-city">${h.city}</div>
+        <div class="home-specs">
+          <div class="spec"><i class="ti ti-bed"></i>${h.beds} bd</div>
+          <div class="spec"><i class="ti ti-bath"></i>${h.baths} ba</div>
+          <div class="spec"><i class="ti ti-ruler"></i>${h.sqft.toLocaleString()} sf</div>
+          <div class="spec"><i class="ti ti-home"></i>${h.lot}</div>
+        </div>
+        <div class="home-features">${h.features.map(f => `<span class="feature-tag">${f}</span>`).join('')}</div>
+        <div class="home-actions-row">
+          <button class="home-mort" onclick="event.stopPropagation();lodgeApp.openMortgage(${h.id})"><i class="ti ti-calculator"></i> Mortgage</button>
+          <a class="home-link" href="${h.url}" target="_blank" rel="noopener"><i class="ti ti-external-link"></i> Listing</a>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  attachDrag();
+}
+
+function galleryNav(id, dir) {
+  const h = HOMES.find(x => x.id === id);
+  const cur = state.galleryIdx[id] || 0;
+  state.galleryIdx[id] = (cur + dir + h.imgs.length) % h.imgs.length;
+  save(); renderStack();
+}
+
+function attachDrag() {
+  const top = el('stack').querySelector('.home-card:not(.behind)');
+  if (!top) return;
+  let startX = 0, startY = 0, dx = 0, dy = 0, dragging = false, intent = null;
+  top.addEventListener('pointerdown', (e) => {
+    if (e.target.closest('.gallery-nav') || e.target.closest('.home-mort') || e.target.closest('.home-link')) return;
+    dragging = true; startX = e.clientX; startY = e.clientY; intent = null;
+    top.style.transition = 'none'; top.setPointerCapture(e.pointerId);
+  });
+  top.addEventListener('pointermove', (e) => {
+    if (!dragging) return;
+    dx = e.clientX - startX; dy = e.clientY - startY;
+    if (!intent && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) intent = Math.abs(dx) > Math.abs(dy) ? 'h' : 'v';
+    if (intent !== 'h') return;
+    top.style.transform = `translateX(${dx}px) rotate(${dx * 0.05}deg)`;
+    top.classList.toggle('show-like', dx > 50);
+    top.classList.toggle('show-dislike', dx < -50);
+  });
+  top.addEventListener('pointerup', () => {
+    dragging = false; top.style.transition = '';
+    if (intent === 'h' && dx > 100) swipe('right');
+    else if (intent === 'h' && dx < -100) swipe('left');
+    else { top.style.transform = ''; top.classList.remove('show-like', 'show-dislike'); }
+    dx = 0; dy = 0;
+  });
+}
+
+function haptic(ms) { try { if (navigator.vibrate) navigator.vibrate(ms || 10); } catch(e) {} }
+
+function preloadNextImages() { /* placeholders are inline SVG, no preload needed */ }
+
+function swipe(dir) {
+  const queue = getQueue();
+  const home = queue[0];
+  if (!home) return;
+  const top = el('stack').querySelector('.home-card:not(.behind)');
+  if (top) top.classList.add(dir === 'right' ? 'gone-right' : 'gone-left');
+  state.viewedIds.push(home.id);
+  if (dir === 'right') { state.liked.push(home.id); haptic([15, 50, 15]); showLoveToast(home); }
+  else { state.disliked.push(home.id); haptic(10); }
+  state.lastAction = { id: home.id, dir };
+  save();
+  syncToSheet(dir === 'right' ? 'LOVE' : 'PASS', home.id);
+  setTimeout(() => { renderStack(); updateCounts(); updateChipCounts(); updateUndoBtn(); preloadNextImages(); }, 350);
+}
+
+function showLoveToast(home) {
+  const toast = el('love-toast');
+  const text = el('love-toast-text');
+  const lovedCount = state.liked.length;
+  if (lovedCount === 1) text.innerHTML = `Added <b>${home.address.split(' ').slice(0,3).join(' ')}</b><br><span style="font-size:11px;opacity:0.8">Love 1 more to compare</span>`;
+  else if (lovedCount === 2) text.innerHTML = `<b>2 loves!</b> Ready to compare side-by-side`;
+  else text.innerHTML = `<b>${lovedCount} loves</b> · Compare your top picks`;
+  toast.classList.add('show');
+  clearTimeout(window.__loveToastTimer);
+  window.__loveToastTimer = setTimeout(() => toast.classList.remove('show'), 4000);
+}
+
+function goToCompare() {
+  el('love-toast').classList.remove('show');
+  document.querySelectorAll('.lodge-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'compare'));
+  document.querySelectorAll('.lodge-view').forEach(v => v.classList.toggle('active', v.id === 'view-compare'));
+  renderComparePicker(); renderCompareResults();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goToReview(view) {
+  document.querySelectorAll('.lodge-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'liked'));
+  document.querySelectorAll('.lodge-view').forEach(v => v.classList.toggle('active', v.id === 'view-liked'));
+  if (view) setReviewView(view); else renderReview();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function undo() {
+  if (!state.lastAction) return;
+  const { id, dir } = state.lastAction;
+  state.viewedIds = state.viewedIds.filter(x => x !== id);
+  if (dir === 'right') state.liked = state.liked.filter(x => x !== id);
+  else state.disliked = state.disliked.filter(x => x !== id);
+  state.lastAction = null;
+  save(); syncToSheet('UNDO', id);
+  renderStack(); updateCounts(); updateChipCounts(); updateUndoBtn();
+}
+
+function updateUndoBtn() {
+  const btn = el('undo-btn');
+  const text = el('undo-text');
+  if (state.lastAction) {
+    const home = HOMES.find(h => h.id === state.lastAction.id);
+    const action = state.lastAction.dir === 'right' ? 'love' : 'pass';
+    text.textContent = `Undo ${action} on ${home.address.split(' ').slice(0, 2).join(' ')}`;
+    btn.classList.add('visible');
+  } else btn.classList.remove('visible');
+}
+
+function reconsider(id) {
+  state.disliked = state.disliked.filter(x => x !== id);
+  state.viewedIds = state.viewedIds.filter(x => x !== id);
+  save(); syncToSheet('RECONSIDER', id);
+  renderStack(); renderReview(); updateCounts(); updateChipCounts();
+}
+
+function updateCounts() {
+  el('count-reviewed').textContent = state.liked.length + state.disliked.length;
+  el('stat-loved').textContent = state.liked.length;
+  el('stat-passed').textContent = state.disliked.length;
+  const liked = state.liked.map(id => HOMES.find(h => h.id === id)).filter(Boolean);
+  const avgP = liked.length ? liked.reduce((s,h)=>s+h.price,0) / liked.length : 0;
+  el('stat-budget').textContent = avgP ? fmtPrice(avgP) : '$0';
+}
+
+function renderReview() {
+  const grid = el('liked-grid');
+  let ids = state.reviewView === 'loved' ? [...state.liked] : [...state.disliked];
+  const showSort = state.reviewView === 'loved' && (state.priorities || []).length > 0 && ids.length >= 2;
+  const sortMode = state.reviewSort || 'recent';
+  if (showSort && sortMode === 'match') {
+    ids.sort((a, b) => { const ha = HOMES.find(h => h.id === a); const hb = HOMES.find(h => h.id === b); if (!ha || !hb) return 0; return calcMatchScore(hb) - calcMatchScore(ha); });
+  }
+  let sortHTML = '';
+  if (showSort) sortHTML = `<div class="review-sort"><button class="review-sort-btn ${sortMode === 'recent' ? 'active' : ''}" onclick="lodgeApp.setReviewSort('recent')"><i class="ti ti-clock"></i> Recent</button><button class="review-sort-btn ${sortMode === 'match' ? 'active' : ''}" onclick="lodgeApp.setReviewSort('match')"><i class="ti ti-target"></i> Best match</button></div>`;
+  if (ids.length === 0) {
+    const msg = state.reviewView === 'loved' ? 'No loves yet' : 'No passes yet';
+    const sub = state.reviewView === 'loved' ? 'Swipe right on homes you love' : 'Homes you swipe left on appear here';
+    grid.innerHTML = sortHTML + `<div class="empty-state" style="grid-column:1/-1"><i class="ti ti-${state.reviewView === 'loved' ? 'heart' : 'x'}"></i><h3>${msg}</h3><p>${sub}</p></div>`;
+    return;
+  }
+  const cardsHTML = ids.map(id => {
+    const h = HOMES.find(x => x.id === id);
+    if (!h) return '';
+    const score = state.scores[id] || 0;
+    const sel = state.compareIds.includes(id) ? 'selected' : '';
+    const cls = state.reviewView === 'loved' ? 'loved' : 'passed';
+    const badge = h.construction === 'new' ? '<div class="liked-badge new">New</div>' : '<div class="liked-badge resale">Resale</div>';
+    const reconsiderBtn = state.reviewView === 'passed' ? `<button class="reconsider-btn" onclick="event.stopPropagation();lodgeApp.reconsider(${id})"><i class="ti ti-rotate"></i> Reconsider</button>` : '';
+    let matchBadge = '';
+    if (state.reviewView === 'loved' && (state.priorities || []).length > 0) {
+      const ms = calcMatchScore(h);
+      if (ms !== null) { const msCls = getMatchScoreClass(ms); matchBadge = `<div class="score-pill score-${msCls} card-corner-badge" aria-label="${ms} percent match score">${ms}%</div>`; }
+    }
+    return `<div class="liked-card ${cls} ${sel}" onclick="lodgeApp.openLiked(${id})">
+      <div class="liked-thumb" style="background-image:url(&quot;${homeImg(h, 0)}&quot;);position:relative">${badge}${matchBadge}</div>
+      <div class="liked-price">${fmtFull(h.price)}</div>
+      <div class="liked-addr">${h.address}</div>
+      <div class="liked-addr" style="font-size:10px">${h.city}</div>
+      ${state.reviewView === 'loved' ? `<div class="liked-score"><span class="stars">${'★'.repeat(score)}${'☆'.repeat(10-score)}</span> ${score}/10</div>` : ''}
+      ${reconsiderBtn}
+    </div>`;
+  }).join('');
+  grid.innerHTML = (showSort ? `<div style="grid-column:1/-1">${sortHTML}</div>` : '') + cardsHTML;
+}
+
+function setReviewSort(mode) { state.reviewSort = mode; save(); renderReview(); }
+function setReviewView(v) { state.reviewView = v; document.querySelectorAll('.toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.view === v)); save(); renderReview(); }
+
+const PRIORITY_WEIGHTS = [50, 30, 20];
+
+function calcMatchScore(home) {
+  const prios = state.priorities || [];
+  if (prios.length === 0) return null;
+  let score = 0, maxScore = 0;
+  prios.slice(0, 3).forEach((mhId, idx) => {
+    const weight = PRIORITY_WEIGHTS[idx] || 0;
+    maxScore += weight;
+    const criterion = MUST_HAVES_CATALOG.find(c => c.id === mhId);
+    if (criterion && criterion.match(home)) score += weight;
+  });
+  return maxScore === 0 ? null : Math.round((score / maxScore) * 100);
+}
+
+function getMatchScoreClass(score) {
+  if (score === null || score === undefined) return '';
+  if (score >= 80) return 'high';
+  if (score >= 50) return 'medium';
+  return 'low';
+}
+
+function renderChecklist() {
+  const content = el('mh-content');
+  const prios = state.priorities || [];
+  if (prios.length === 0) { content.innerHTML = renderMHWizard(); return; }
+  let html = '';
+  html += renderInsightCard(); html += renderMHPriorities(); html += renderMHMatches(); html += renderMHAddMore();
+  content.innerHTML = html;
+}
+
+function renderMHWizard() {
+  return `<div class="mh-wizard"><span class="mh-wizard-icon"><i class="ti ti-target"></i></span><h3>What matters most to you?</h3><p>Pick your top 3 priorities. We'll calculate a match score for every home so you can decide faster.</p><button class="mh-wizard-cta" onclick="lodgeApp.openMHSelector()"><i class="ti ti-list-check"></i> Set my priorities</button></div>`;
+}
+
+function renderMHPriorities() {
+  const prios = state.priorities || [];
+  const items = prios.map((id, idx) => {
+    const c = MUST_HAVES_CATALOG.find(x => x.id === id);
+    if (!c) return '';
+    const weight = PRIORITY_WEIGHTS[idx] || 0;
+    const isFirst = idx === 0, isLast = idx === prios.length - 1;
+    return `<div class="mh-priority-item"><div class="mh-priority-rank ${isFirst ? 'gold' : ''}">${idx + 1}</div><div class="mh-priority-text">${c.icon} ${c.label}<div class="mh-priority-weight">${weight}% of match score</div></div><div class="mh-priority-arrows"><button onclick="lodgeApp.movePriority(${idx}, -1)" ${isFirst ? 'disabled' : ''} aria-label="Move up">▲</button><button onclick="lodgeApp.movePriority(${idx}, 1)" ${isLast ? 'disabled' : ''} aria-label="Move down">▼</button></div><button class="mh-priority-remove" onclick="lodgeApp.removePriority('${id}')" aria-label="Remove">×</button></div>`;
+  }).join('');
+  return `<div class="mh-section"><div class="mh-section-header"><div class="mh-section-title">Your priorities</div><span class="mh-section-link" onclick="lodgeApp.openMHSelector()">+ Edit</span></div><div class="mh-priority-list">${items}</div></div>`;
+}
+
+function renderMHAddMore() {
+  const prios = state.priorities || [];
+  if (prios.length >= 3) return '';
+  return `<div class="mh-section"><div style="text-align:center;padding:8px 0"><button class="mh-wizard-cta" style="background:#1a3a3a;color:#d4a574" onclick="lodgeApp.openMHSelector()"><i class="ti ti-plus"></i> Add more priorities (${prios.length}/3)</button></div></div>`;
+}
+
+function renderMHMatches() {
+  const prios = state.priorities || [];
+  if (prios.length === 0) return '';
+  const liked = state.liked.map(id => HOMES.find(h => h.id === id)).filter(Boolean);
+  if (liked.length === 0) return `<div class="mh-section"><div class="mh-section-header"><div class="mh-section-title">Match scores</div></div><div style="text-align:center;padding:14px;font-size:12px;color:#8a7c6a">Love some homes in Discover to see how they match your priorities.</div></div>`;
+  const scored = liked.map(h => ({ home: h, score: calcMatchScore(h) })).sort((a,b) => b.score - a.score);
+  const items = scored.map(({ home, score }) => {
+    const criteriaHTML = prios.slice(0, 3).map(id => { const c = MUST_HAVES_CATALOG.find(x => x.id === id); if (!c) return ''; const matches = c.match(home); return `<span class="${matches ? 'yes' : 'no'}">${matches ? '✓' : '✗'} ${c.label}</span>`; }).join(' ');
+    return `<div class="mh-match-card" onclick="lodgeApp.openLiked(${home.id})"><div class="mh-match-thumb" style="background-image:url(&quot;${homeImg(home, 0)}&quot;)"></div><div class="mh-match-info"><div class="mh-match-address">${home.address}</div><div class="mh-match-criteria">${criteriaHTML}</div></div><div class="mh-match-score ${getMatchScoreClass(score)}"><div class="num">${score}</div><div class="lbl">MATCH</div></div></div>`;
+  }).join('');
+  return `<div class="mh-section"><div class="mh-section-header"><div class="mh-section-title">Your loves, ranked</div><span style="font-size:10px;color:#8a7c6a">${liked.length} home${liked.length === 1 ? '' : 's'}</span></div><div>${items}</div></div>`;
+}
+
+function renderInsightCard() {
+  const insight = computeInsight();
+  if (!insight) return '';
+  const key = insight.key;
+  if (state.dismissedInsights && state.dismissedInsights[key]) return '';
+  return `<div class="mh-insight"><button class="mh-insight-dismiss" onclick="lodgeApp.dismissInsight('${key}')" aria-label="Dismiss">×</button><div class="mh-insight-header"><span>💡</span> Insight</div><div class="mh-insight-text">${insight.text}</div></div>`;
+}
+
+function computeInsight() {
+  const prios = state.priorities || [];
+  const liked = state.liked.map(id => HOMES.find(h => h.id === id)).filter(Boolean);
+  if (prios.length >= 1 && liked.length >= 3) {
+    const top = MUST_HAVES_CATALOG.find(c => c.id === prios[0]);
+    if (top) {
+      if (liked.every(h => top.match(h))) return { key: `confirm_${prios[0]}`, text: `<b>${top.icon} ${top.label}</b> is clearly important: <b>all ${liked.length} loved homes</b> have it. This is your strongest preference.` };
+      if (liked.every(h => !top.match(h))) return { key: `contradict_${prios[0]}`, text: `Heads up: <b>none</b> of your ${liked.length} loved homes match <b>${top.label}</b> (your #1 priority). Maybe rerank?` };
+    }
+  }
+  if (prios.length > 0 && liked.length === 0) {
+    const top = MUST_HAVES_CATALOG.find(c => c.id === prios[0]);
+    const matching = HOMES.filter(h => top && top.match(h)).length;
+    return { key: `start_${prios[0]}`, text: `${matching} home${matching === 1 ? '' : 's'} in your portfolio match your #1 priority <b>${top.label}</b>. Head to Discover and we'll show you match scores on every card.` };
+  }
+  return null;
+}
+
+function dismissInsight(key) { if (!state.dismissedInsights) state.dismissedInsights = {}; state.dismissedInsights[key] = true; save(); renderChecklist(); }
+
+function openMHSelector() {
+  const prios = state.priorities || [];
+  const optionsHTML = MUST_HAVES_CATALOG.map(c => {
+    const selectedIdx = prios.indexOf(c.id);
+    const isSelected = selectedIdx !== -1;
+    const isDisabled = !isSelected && prios.length >= 3;
+    return `<div class="mh-option ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}" onclick="${isDisabled ? '' : `lodgeApp.toggleMHPriority('${c.id}')`}"><span class="mh-option-icon">${c.icon}</span><span class="mh-option-text">${c.label}</span><span class="mh-option-rank">${isSelected ? selectedIdx + 1 : ''}</span></div>`;
+  }).join('');
+  el('modal-content').innerHTML = `<div class="modal-title">Pick your top 3 priorities</div><div class="mh-select-sub">Tap to add (max 3). First pick = highest priority (50% of score).</div><div class="mh-select-grid" id="mh-select-grid">${optionsHTML}</div><div style="margin-top:16px;display:flex;gap:8px"><button onclick="lodgeApp.closeModal()" style="flex:1;padding:11px;background:#1a3a3a;color:#d4a574;border:none;border-radius:6px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer">Done</button></div>`;
+  el('modal').classList.add('active');
+}
+
+function toggleMHPriority(id) {
+  if (!state.priorities) state.priorities = [];
+  const idx = state.priorities.indexOf(id);
+  if (idx !== -1) state.priorities.splice(idx, 1);
+  else if (state.priorities.length < 3) state.priorities.push(id);
+  save(); openMHSelector(); renderChecklist(); renderStack();
+}
+
+function movePriority(idx, direction) {
+  if (!state.priorities) return;
+  const newIdx = idx + direction;
+  if (newIdx < 0 || newIdx >= state.priorities.length) return;
+  [state.priorities[idx], state.priorities[newIdx]] = [state.priorities[newIdx], state.priorities[idx]];
+  save(); renderChecklist(); renderStack();
+}
+
+function removePriority(id) {
+  if (!state.priorities) return;
+  const idx = state.priorities.indexOf(id);
+  if (idx !== -1) state.priorities.splice(idx, 1);
+  save(); renderChecklist(); renderStack();
+}
+
+function showMatchDetail(homeId) {
+  const home = HOMES.find(h => h.id === homeId);
+  if (!home) return;
+  const prios = state.priorities || [];
+  if (prios.length === 0) {
+    el('modal-content').innerHTML = `<div class="modal-title">No priorities set</div><p style="font-size:13px;color:#5a6a5a;line-height:1.5;margin-bottom:14px">Set your top 3 priorities to see how each home matches them.</p><button style="width:100%;padding:11px;background:#1a3a3a;color:#d4a574;border:none;border-radius:6px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer" onclick="lodgeApp.closeModal();lodgeApp.openMHSelector()">Set my priorities</button>`;
+    el('modal').classList.add('active');
+    return;
+  }
+  const score = calcMatchScore(home);
+  const cls = getMatchScoreClass(score);
+  const colorMap = { high: '#2d6a3a', medium: '#c08552', low: '#8a7c6a' };
+  const color = colorMap[cls] || '#8a7c6a';
+  const detailsHTML = prios.slice(0, 3).map((id, idx) => {
+    const c = MUST_HAVES_CATALOG.find(x => x.id === id);
+    if (!c) return '';
+    const weight = PRIORITY_WEIGHTS[idx];
+    const matches = c.match(home);
+    return `<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:${matches ? '#e8f0e4' : '#f5e8e4'};border-radius:6px;margin-bottom:6px;font-size:13px"><span style="flex:1">${c.icon} ${c.label}</span><span style="font-weight:700;color:${matches ? '#2d6a3a' : '#a83a30'}">${matches ? '+' : '0/'}${weight}</span></div>`;
+  }).join('');
+  el('modal-content').innerHTML = `<div class="modal-title">Match breakdown</div><div style="text-align:center;margin-bottom:14px"><div style="font-size:42px;font-weight:800;color:${color};line-height:1">${score}%</div><div style="font-size:11px;color:#8a7c6a;letter-spacing:1px;text-transform:uppercase;font-weight:600">Match score</div><div style="font-size:12px;color:#1a3a3a;margin-top:6px">${home.address}, ${home.city}</div></div>${detailsHTML}<div style="margin-top:14px;display:flex;flex-direction:column;gap:8px"><button class="modal-btn primary" onclick="lodgeApp.closeModal()">Got it</button><button class="modal-btn secondary" onclick="lodgeApp.closeModal();lodgeApp.openMHSelector()" style="background:transparent;border:1px solid #1a3a3a;color:#1a3a3a"><i class="ti ti-adjustments"></i> Adjust my priorities</button></div>`;
+  el('modal').classList.add('active');
+}
+
+function openLiked(id) {
+  const h = HOMES.find(x => x.id === id);
+  const score = state.scores[id] || 0;
+  const note = state.notes[id] || '';
+  const rooms = state.rooms[id] || [];
+  const inCompare = state.compareIds.includes(id);
+  const isPassed = state.disliked.includes(id);
+  let actionBtns;
+  if (isPassed) actionBtns = `<button class="modal-btn secondary" onclick="lodgeApp.openMortgage(${id})">Mortgage</button><button class="modal-btn primary" onclick="lodgeApp.saveLikedDetails(${id})">Save</button>`;
+  else actionBtns = `<button class="modal-btn secondary" onclick="lodgeApp.openMortgage(${id})">Mortgage</button><button class="modal-btn secondary" onclick="lodgeApp.toggleCompare(${id})">${inCompare ? 'Remove' : 'Compare'}</button><button class="modal-btn primary" onclick="lodgeApp.saveLikedDetails(${id})">Save</button>`;
+  el('modal-content').innerHTML = `<div class="modal-title">${h.address}</div><div style="font-size:11px;color:#8a7c6a;margin-bottom:12px">${h.city} · ${fmtFull(h.price)} · ${h.construction === 'new' ? 'New Construction' : 'Resale'}</div>${!isPassed ? `<div style="font-size:12px;color:#4a5a4a;margin-bottom:6px">Your score (1-10)</div><div class="score-row">${[1,2,3,4,5,6,7,8,9,10].map(n => `<span class="score-star ${n<=score?'active':''}" onclick="lodgeApp.setScore(${id},${n})">★</span>`).join('')}</div><div style="font-size:12px;color:#4a5a4a;margin-bottom:6px">Favorite rooms</div><div class="room-tags">${ROOMS.map(r => `<span class="room-tag ${rooms.includes(r)?'active':''}" onclick="lodgeApp.toggleRoom(${id},'${r}')">${r}</span>`).join('')}</div>` : ''}<div style="font-size:12px;color:#4a5a4a;margin-bottom:6px">${isPassed ? 'Why you passed' : 'Notes for Cristian'}</div><textarea class="modal-textarea" id="note-input" placeholder="${isPassed ? 'Too small? Wrong area?...' : 'What stood out? Concerns?'}">${note}</textarea><div class="modal-btns">${actionBtns}</div>`;
+  el('modal').classList.add('active');
+}
+
+function openMortgage(id) {
+  const h = HOMES.find(x => x.id === id);
+  let savedPrefs = {};
+  try { savedPrefs = JSON.parse(localStorage.getItem('cmr_mort_prefs') || '{}'); } catch(e) {}
+  const downPct = savedPrefs.downPct || 5;
+  const rate = savedPrefs.rate || 6.5;
+  const years = savedPrefs.years || 30;
+  const sb240Note = h.price <= 450000 ? `<div style="background:rgba(45,106,58,0.1);border-left:3px solid #2d6a3a;padding:8px 12px;border-radius:4px;font-size:11px;color:#2d6a3a;margin-bottom:12px"><strong>Utah SB 240:</strong> Esta casa califica. Puedes usar $20,000 como enganche (préstamo diferido al 0%). Pon el down payment en ~5% para ver un escenario cercano.</div>` : `<div style="background:#fef0eb;border-left:3px solid #c08552;padding:8px 12px;border-radius:4px;font-size:11px;color:#8b5a2b;margin-bottom:12px"><strong>Nota:</strong> Sobre el límite de $450K de SB 240. Habría que negociar el precio para calificar.</div>`;
+  el('modal-content').innerHTML = `<div class="modal-title">Mortgage estimator</div><div style="font-size:11px;color:#8a7c6a;margin-bottom:14px">${h.address} · ${fmtFull(h.price)}</div>${sb240Note}<div class="mort-grid"><div class="mort-row"><div class="mort-label">Down payment</div><input type="range" class="mort-slider" id="m-down" min="3" max="30" value="${downPct}" step="1" oninput="lodgeApp.updateMort(${id})"/><div class="mort-value" id="m-down-v">${downPct}%</div></div><div class="mort-row"><div class="mort-label">Interest rate</div><input type="range" class="mort-slider" id="m-rate" min="40" max="90" value="${rate*10}" step="1" oninput="lodgeApp.updateMort(${id})"/><div class="mort-value" id="m-rate-v">${rate.toFixed(1)}%</div></div><div class="mort-row"><div class="mort-label">Loan term</div><input type="range" class="mort-slider" id="m-years" min="15" max="30" value="${years}" step="5" oninput="lodgeApp.updateMort(${id})"/><div class="mort-value" id="m-years-v">${years} yr</div></div></div><div class="mort-summary"><div class="mort-monthly-lbl">Estimated monthly</div><div class="mort-monthly" id="m-monthly">$0</div><div class="mort-breakdown"><div class="mort-mini"><div class="mort-mini-lbl">Principal &amp; interest</div><div class="mort-mini-val" id="m-pi">$0</div></div><div class="mort-mini"><div class="mort-mini-lbl">Property tax</div><div class="mort-mini-val" id="m-tax">$0</div></div><div class="mort-mini"><div class="mort-mini-lbl">Insurance (est.)</div><div class="mort-mini-val" id="m-ins">$0</div></div><div class="mort-mini"><div class="mort-mini-lbl">HOA</div><div class="mort-mini-val" id="m-hoa">$${h.hoa}</div></div><div class="mort-mini"><div class="mort-mini-lbl">Down payment</div><div class="mort-mini-val" id="m-dp">$0</div></div><div class="mort-mini"><div class="mort-mini-lbl">Loan amount</div><div class="mort-mini-val" id="m-loan">$0</div></div></div></div><div style="font-size:10px;color:#8a7c6a;margin-top:10px;font-style:italic">Estimate only. Talk to Cristian for actual lender quotes and S.B. 240 eligibility.</div><div class="modal-btns"><button class="modal-btn primary" onclick="lodgeApp.closeModal()">Close</button></div>`;
+  el('modal').classList.add('active');
+  updateMort(id);
+}
+
+function updateMort(id) {
+  const h = HOMES.find(x => x.id === id);
+  const downPct = +el('m-down').value;
+  const rate = +el('m-rate').value / 10;
+  const years = +el('m-years').value;
+  try { localStorage.setItem('cmr_mort_prefs', JSON.stringify({ downPct, rate, years })); } catch(e) {}
+  el('m-down-v').textContent = downPct + '%';
+  el('m-rate-v').textContent = rate.toFixed(1) + '%';
+  el('m-years-v').textContent = years + ' yr';
+  const m = calcMortgage(h.price, downPct, rate, years);
+  const tax = h.price * h.taxRate / 12;
+  const ins = h.price * 0.0035 / 12;
+  const total = m.pi + tax + ins + h.hoa;
+  el('m-monthly').textContent = fmtFull(total);
+  el('m-pi').textContent = fmtFull(m.pi);
+  el('m-tax').textContent = fmtFull(tax);
+  el('m-ins').textContent = fmtFull(ins);
+  el('m-dp').textContent = fmtFull(m.dp);
+  el('m-loan').textContent = fmtFull(m.principal);
+}
+
+function openNote() {
+  const queue = getQueue();
+  const home = queue[0];
+  if (!home) return;
+  el('modal-content').innerHTML = `<div class="modal-title">Quick note</div><div style="font-size:11px;color:#8a7c6a;margin-bottom:12px">${home.address}</div><textarea class="modal-textarea" id="note-input" placeholder="First impressions...">${state.notes[home.id] || ''}</textarea><div class="modal-btns"><button class="modal-btn secondary" onclick="lodgeApp.closeModal()">Cancel</button><button class="modal-btn primary" onclick="lodgeApp.saveQuickNote(${home.id})">Save</button></div>`;
+  el('modal').classList.add('active');
+}
+
+function setScore(id, n) { state.scores[id] = n; document.querySelectorAll('.score-star').forEach((s, i) => s.classList.toggle('active', i < n)); save(); }
+function toggleRoom(id, r) { state.rooms[id] = state.rooms[id] || []; const i = state.rooms[id].indexOf(r); if (i >= 0) state.rooms[id].splice(i, 1); else state.rooms[id].push(r); openLiked(id); save(); }
+function saveLikedDetails(id) { state.notes[id] = el('note-input').value; save(); syncToSheet('UPDATE', id); closeModal(); renderReview(); updateCounts(); }
+function saveQuickNote(id) { state.notes[id] = el('note-input').value; save(); syncToSheet('NOTE', id); closeModal(); }
+function toggleCompare(id) {
+  const i = state.compareIds.indexOf(id);
+  if (i >= 0) state.compareIds.splice(i, 1);
+  else if (state.compareIds.length < 3) state.compareIds.push(id);
+  save(); closeModal(); renderReview(); renderComparePicker(); renderCompareResults();
+}
+
+function renderComparePicker() {
+  const picker = el('compare-picker');
+  const liked = state.liked.map(id => HOMES.find(h => h.id === id)).filter(Boolean);
+  if (liked.length === 0) { picker.innerHTML = `<div class="compare-picker-empty"><i class="ti ti-heart"></i><div>You haven't loved any homes yet. Go to <strong>Discover</strong> and swipe right on homes you like first.</div></div>`; return; }
+  if (liked.length === 1) { picker.innerHTML = `<div class="compare-picker-empty"><i class="ti ti-heart"></i><div>You need at least <strong>2 loved homes</strong> to compare. Go love one more home in <strong>Discover</strong>.</div></div>`; return; }
+  const selectedCount = state.compareIds.length;
+  const slotsLeft = Math.max(0, 3 - selectedCount);
+  const titleText = selectedCount === 0 ? `Tap homes below to add (${liked.length} loved homes)` : `${selectedCount} selected · ${slotsLeft > 0 ? slotsLeft + ' slot' + (slotsLeft === 1 ? '' : 's') + ' left' : 'max reached'}`;
+  let suggestionHTML = '';
+  if (selectedCount === 0 && liked.length >= 2) {
+    const last2 = liked.slice(-2);
+    const last2Names = last2.map(h => h.address.split(' ').slice(0,2).join(' ')).join(' vs ');
+    suggestionHTML = `<div class="compare-suggestion"><div class="compare-suggestion-text">Quick start: compare your <b>last 2 loves</b><br><span style="opacity:0.85;font-size:11px">${last2Names}</span></div><button class="compare-suggestion-btn" onclick="lodgeApp.quickCompareLast2()">Go</button></div>`;
+  }
+  const scenarios = state.scenarios || {};
+  const scenarioKeys = Object.keys(scenarios);
+  let scenariosHTML = '';
+  if (scenarioKeys.length > 0) {
+    const currentKey = JSON.stringify([...state.compareIds].sort());
+    scenariosHTML = `<div class="scenarios-section"><div class="scenarios-title"><span><i class="ti ti-bookmark"></i> Saved comparisons</span></div><div class="scenarios-list">${scenarioKeys.map(key => { const sc = scenarios[key]; const isActive = JSON.stringify([...sc.ids].sort()) === currentKey; return `<div class="scenario-chip ${isActive ? 'active' : ''}" onclick="lodgeApp.loadScenario('${key}')"><span>${sc.name}</span><button class="scenario-chip-x" onclick="event.stopPropagation();lodgeApp.deleteScenario('${key}')" aria-label="Delete">×</button></div>`; }).join('')}</div></div>`;
+  }
+  let saveScenarioHTML = '';
+  if (selectedCount >= 2) {
+    const currentKey = JSON.stringify([...state.compareIds].sort());
+    const alreadySaved = Object.values(scenarios).some(sc => JSON.stringify([...sc.ids].sort()) === currentKey);
+    if (!alreadySaved) saveScenarioHTML = `<button class="save-scenario-btn" onclick="lodgeApp.saveScenario()" style="margin-top:8px"><i class="ti ti-bookmark-plus"></i> Save this comparison</button>`;
+  }
+  picker.innerHTML = `${scenariosHTML}${suggestionHTML}<div class="compare-picker-title">${titleText}</div><div class="compare-picker-grid">${liked.map(h => { const isSelected = state.compareIds.includes(h.id); const isDisabled = !isSelected && selectedCount >= 3; return `<div class="compare-pick ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}" onclick="${isDisabled ? '' : `lodgeApp.toggleCompare(${h.id})`}"><div class="compare-pick-thumb" style="background-image:url(&quot;${homeImg(h, 0)}&quot;)"></div><div class="compare-pick-price">${fmtFull(h.price)}</div><div class="compare-pick-addr">${h.address}</div></div>`; }).join('')}</div>${saveScenarioHTML}`;
+}
+
+function renderCompareResults() {
+  const area = el('compare-area');
+  const intro = el('compare-intro');
+  if (state.compareIds.length < 2) { area.innerHTML = ''; intro.classList.remove('collapsed'); return; }
+  intro.classList.add('collapsed');
+  const homes = state.compareIds.map(id => HOMES.find(h => h.id === id)).filter(Boolean);
+  const cols = homes.length;
+  const winners = { price: Math.min(...homes.map(h => h.price)), sqft: Math.max(...homes.map(h => h.sqft)), pricePerSqft: Math.min(...homes.map(h => Math.round(h.price/h.sqft))), beds: Math.max(...homes.map(h => h.beds)), baths: Math.max(...homes.map(h => h.baths)), hoa: Math.min(...homes.map(h => h.hoa || 0)), score: Math.max(...homes.map(h => state.scores[h.id] || 0)) };
+  const monthlyEstimates = homes.map(h => { const m = calcMortgage(h.price, 5, 6.5, 30); const tax = h.price * h.taxRate / 12; const ins = h.price * 0.0035 / 12; return Math.round(m.pi + tax + ins + (h.hoa || 0)); });
+  const minMonthly = Math.min(...monthlyEstimates);
+  area.innerHTML = `<div class="compare-results"><div class="compare-results-title">Side by side</div><div class="compare-results-sub">★ marks the best in each category</div><div class="compare-cards cols-${cols}">${homes.map((h, idx) => {
+    const monthly = monthlyEstimates[idx];
+    const pricePerSqft = Math.round(h.price/h.sqft);
+    const score = state.scores[h.id] || 0;
+    const badge = h.construction === 'new' ? '<div class="compare-card-badge new">New</div>' : '<div class="compare-card-badge resale">Resale</div>';
+    const note = (state.notes && state.notes[h.id]) ? state.notes[h.id].trim() : '';
+    const noteHTML = note ? `<div class="compare-card-note">"${note}"</div>` : '';
+    const imgIdx = state.compareImgIdx[h.id] || 0;
+    const currentImg = homeImg(h, imgIdx);
+    const totalImgs = h.imgs.length;
+    const reorderHTML = homes.length > 2 ? `<div class="compare-card-reorder"><button onclick="event.stopPropagation();lodgeApp.reorderCompare(${idx},-1)" ${idx === 0 ? 'disabled' : ''} aria-label="Move left"><i class="ti ti-chevron-left"></i></button><button onclick="event.stopPropagation();lodgeApp.reorderCompare(${idx},1)" ${idx === homes.length - 1 ? 'disabled' : ''} aria-label="Move right"><i class="ti ti-chevron-right"></i></button></div>` : '';
+    return `<div class="compare-card"><div class="compare-card-img" style="background-image:url(&quot;${currentImg}&quot;)" onclick="lodgeApp.cyclePhoto(${h.id})">${reorderHTML}<button class="compare-card-remove" onclick="event.stopPropagation();lodgeApp.toggleCompare(${h.id})" aria-label="Remove">×</button>${badge}${totalImgs > 1 ? `<div class="compare-card-img-counter">${imgIdx + 1}/${totalImgs}</div>` : ''}</div><div class="compare-card-body"><div class="compare-card-price ${h.price === winners.price ? 'winner' : ''}">${fmtFull(h.price)}</div><div class="compare-card-addr">${h.address}, ${h.city}</div><div class="compare-card-stat-group"><div class="compare-card-stat-group-label">Size</div><div class="compare-card-stat"><span class="compare-card-stat-label">Beds</span><span class="compare-card-stat-val ${h.beds === winners.beds ? 'winner' : ''}">${h.beds}</span></div><div class="compare-card-stat"><span class="compare-card-stat-label">Baths</span><span class="compare-card-stat-val ${h.baths === winners.baths ? 'winner' : ''}">${h.baths}</span></div><div class="compare-card-stat"><span class="compare-card-stat-label">Sq Ft</span><span class="compare-card-stat-val ${h.sqft === winners.sqft ? 'winner' : ''}">${h.sqft.toLocaleString()}</span></div></div><div class="compare-card-stat-group"><div class="compare-card-stat-group-label">Money</div><div class="compare-card-stat"><span class="compare-card-stat-label">$/SF</span><span class="compare-card-stat-val ${pricePerSqft === winners.pricePerSqft ? 'winner' : ''}">$${pricePerSqft}</span></div><div class="compare-card-stat"><span class="compare-card-stat-label">HOA</span><span class="compare-card-stat-val ${h.hoa === winners.hoa ? 'winner' : ''}">$${h.hoa}/mo</span></div><div class="compare-card-stat"><span class="compare-card-stat-label">Monthly</span><span class="compare-card-stat-val ${monthly === minMonthly ? 'winner' : ''}">$${monthly.toLocaleString()}</span></div></div>${score > 0 ? `<div class="compare-card-stat-group"><div class="compare-card-stat-group-label">Your Take</div><div class="compare-card-stat"><span class="compare-card-stat-label">My Score</span><span class="compare-card-stat-val ${score === winners.score ? 'winner' : ''}">${score}/10</span></div></div>` : ''}${noteHTML}</div></div>`;
+  }).join('')}</div>${renderVerdict(homes, winners, monthlyEstimates, minMonthly)}<div class="compare-actions-bar"><button class="compare-action-btn secondary" onclick="lodgeApp.clearCompare()"><i class="ti ti-refresh" aria-hidden="true"></i> Clear &amp; pick again</button><button class="compare-action-btn" onclick="lodgeApp.scheduleShowings()"><i class="ti ti-calendar" aria-hidden="true"></i> Schedule showings</button><button class="compare-action-btn" onclick="lodgeApp.exportPDF()"><i class="ti ti-download" aria-hidden="true"></i> Email to Cristian</button></div></div>`;
+}
+
+function renderVerdict(homes, winners, monthlyEstimates, minMonthly) {
+  const findHomeWith = (key, val) => { if (key === 'monthly') return homes.find((_, i) => monthlyEstimates[i] === minMonthly); if (key === 'pricePerSqft') return homes.find(h => Math.round(h.price/h.sqft) === val); return homes.find(h => h[key] === val); };
+  const verdicts = [];
+  const cheapest = findHomeWith('price', winners.price);
+  if (cheapest) verdicts.push({ icon: '💰', text: `<b>Best price:</b> ${cheapest.address.split(' ').slice(0,3).join(' ')} at ${fmtFull(cheapest.price)}` });
+  const lowestMonthly = findHomeWith('monthly', minMonthly);
+  const cheapestPriceHome = findHomeWith('price', winners.price);
+  if (lowestMonthly && lowestMonthly.id !== cheapestPriceHome?.id) verdicts.push({ icon: '📉', text: `<b>Lowest monthly:</b> ${lowestMonthly.address.split(' ').slice(0,3).join(' ')} at $${minMonthly.toLocaleString()}/mo` });
+  const bestValue = findHomeWith('pricePerSqft', winners.pricePerSqft);
+  if (bestValue) verdicts.push({ icon: '📐', text: `<b>Best value per sqft:</b> ${bestValue.address.split(' ').slice(0,3).join(' ')} at $${winners.pricePerSqft}/sqft` });
+  const largest = findHomeWith('sqft', winners.sqft);
+  if (largest) verdicts.push({ icon: '🏠', text: `<b>Most space:</b> ${largest.address.split(' ').slice(0,3).join(' ')} with ${winners.sqft.toLocaleString()} sqft` });
+  const lowestHOA = findHomeWith('hoa', winners.hoa);
+  if (lowestHOA && winners.hoa < 200) verdicts.push({ icon: '🏘️', text: `<b>Lowest HOA:</b> ${lowestHOA.address.split(' ').slice(0,3).join(' ')} at $${winners.hoa}/mo` });
+  if (verdicts.length === 0) return '';
+  return `<div class="compare-verdict"><div class="compare-verdict-title">Quick verdict</div><div class="verdict-list">${verdicts.map(v => `<div class="verdict-row"><span class="verdict-icon">${v.icon}</span><span class="verdict-text">${v.text}</span></div>`).join('')}</div></div>`;
+}
+
+function clearCompare() { state.compareIds = []; state.compareImgIdx = {}; save(); renderComparePicker(); renderCompareResults(); }
+
+function scheduleShowings() {
+  const homes = state.compareIds.map(id => HOMES.find(h => h.id === id)).filter(Boolean);
+  if (homes.length === 0) return;
+  const homesList = homes.map(h => `• ${h.address}, ${h.city} (${fmtFull(h.price)})`).join('\n');
+  const clientName = (typeof CLIENT_NAME !== 'undefined') ? CLIENT_NAME : 'your client';
+  const message = `Hi Cristian, I'm comparing these homes and would like to schedule showings:\n\n${homesList}\n\nWhen are you available this week?\n\n— ${clientName}`;
+  const phone = '18017194237';
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+}
+
+function toggleTheme() {
+  const isDark = document.documentElement.classList.toggle('theme-dark');
+  try { localStorage.setItem('cmr_theme', isDark ? 'dark' : 'light'); } catch(e) {}
+  const icon = el('theme-icon');
+  if (icon) icon.className = isDark ? 'ti ti-sun' : 'ti ti-moon';
+}
+
+function applySavedTheme() {
+  let saved = 'light';
+  try { saved = localStorage.getItem('cmr_theme') || 'light'; } catch(e) {}
+  if (saved === 'light' && !localStorage.getItem('cmr_theme')) { if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) saved = 'dark'; }
+  if (saved === 'dark') { document.documentElement.classList.add('theme-dark'); const icon = el('theme-icon'); if (icon) icon.className = 'ti ti-sun'; }
+}
+
+function quickCompareLast2() { const last2 = state.liked.slice(-2); state.compareIds = [...last2]; save(); renderComparePicker(); renderCompareResults(); }
+
+function saveScenario() {
+  const homes = state.compareIds.map(id => HOMES.find(h => h.id === id)).filter(Boolean);
+  if (homes.length < 2) return;
+  const defaultName = homes.length === 2 ? homes.map(h => h.address.split(' ').slice(0,2).join(' ')).join(' vs ') : `Top ${homes.length}: ${homes[0].city}`;
+  const name = prompt('Name this comparison:', defaultName);
+  if (!name || !name.trim()) return;
+  const key = 'sc_' + Date.now();
+  if (!state.scenarios) state.scenarios = {};
+  state.scenarios[key] = { name: name.trim().slice(0, 40), ids: [...state.compareIds] };
+  save(); renderComparePicker();
+}
+
+function loadScenario(key) { const sc = state.scenarios && state.scenarios[key]; if (!sc) return; state.compareIds = [...sc.ids]; save(); renderComparePicker(); renderCompareResults(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+function deleteScenario(key) { if (!state.scenarios || !state.scenarios[key]) return; if (!confirm(`Delete "${state.scenarios[key].name}"?`)) return; delete state.scenarios[key]; save(); renderComparePicker(); }
+function reorderCompare(idx, direction) { const newIdx = idx + direction; if (newIdx < 0 || newIdx >= state.compareIds.length) return; const ids = [...state.compareIds]; [ids[idx], ids[newIdx]] = [ids[newIdx], ids[idx]]; state.compareIds = ids; save(); renderCompareResults(); }
+function cyclePhoto(homeId) { const home = HOMES.find(h => h.id === homeId); if (!home) return; const cur = state.compareImgIdx[homeId] || 0; state.compareImgIdx[homeId] = (cur + 1) % home.imgs.length; save(); renderCompareResults(); }
+function updateCompareBtn() { renderComparePicker(); renderCompareResults(); }
+
+function exportPDF() {
+  const liked = state.liked.map(id => HOMES.find(x => x.id === id)).filter(Boolean);
+  if (liked.length === 0) { alert("No loved homes to export yet."); return; }
+  const win = window.open('', '_blank');
+  if (!win) { alert('Please allow pop-ups to export.'); return; }
+  const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  const totalAvg = liked.reduce((s,h)=>s+h.price,0) / liked.length;
+  const scoresArr = liked.map(h => state.scores[h.id]).filter(Boolean);
+  const avgScore = scoresArr.length ? (scoresArr.reduce((a,b)=>a+b,0)/scoresArr.length).toFixed(1) : 'N/A';
+  const homesHtml = liked.map(h => {
+    const s = state.scores[h.id] || 0;
+    const n = state.notes[h.id] || '';
+    const r = state.rooms[h.id] || [];
+    const m = calcMortgage(h.price, 5, 6.5, 30);
+    const tax = h.price * h.taxRate / 12;
+    const ins = h.price * 0.0035 / 12;
+    const monthly = m.pi + tax + ins + h.hoa;
+    return `<div class="home"><div class="home-head"><div><div class="home-addr">${h.address}</div><div class="home-cit">${h.city} · ${h.construction === 'new' ? 'New' : 'Resale'}</div></div><div class="home-pr">${fmtFull(h.price)}</div></div><div class="home-specs"><b>${h.beds}</b> bd · <b>${h.baths}</b> ba · <b>${h.sqft.toLocaleString()}</b> sf · HOA <b>$${h.hoa}</b>/mo</div><div class="row"><div><div class="lbl">Score</div><div class="val">${s ? s + '/10' : '—'}</div></div><div><div class="lbl">Est. monthly (5% down, 6.5%, 30yr)</div><div class="val">${fmtFull(monthly)}</div></div></div>${r.length ? `<div class="rooms"><b>Favorite rooms:</b> ${r.join(', ')}</div>` : ''}${n ? `<div class="note"><b>Note:</b> ${n.replace(/</g,'&lt;')}</div>` : ''}</div>`;
+  }).join('');
+  win.document.write(`<!DOCTYPE html><html><head><title>${CLIENT_NAME} · Home Portfolio</title><style>@page { margin: 0.5in; } body { font-family: Georgia, serif; color: #2d3e2f; max-width: 7.5in; margin: 0 auto; padding: 30px 24px; background: #faf7f0; } .head { border-bottom: 2px solid #1a3a3a; padding-bottom: 14px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; } .brand { font-size: 22px; color: #1a3a3a; letter-spacing: 1px; } .sub { font-size: 11px; color: #8a7c6a; letter-spacing: 2px; text-transform: uppercase; margin-top: 3px; } .for { text-align: right; font-size: 12px; color: #8a7c6a; } .for b { color: #1a3a3a; font-size: 14px; display: block; } h2 { font-size: 14px; color: #1a3a3a; border-bottom: 1px solid #c08552; padding-bottom: 4px; margin-top: 22px; } .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin: 12px 0; } .stat { background: #fffdf7; border-left: 3px solid #c08552; padding: 10px 12px; } .stat-n { font-size: 18px; color: #1a3a3a; font-weight: bold; } .stat-l { font-size: 9px; color: #8a7c6a; letter-spacing: 1px; text-transform: uppercase; } .home { background: #fffdf7; padding: 12px 14px; margin-bottom: 12px; border-left: 3px solid #1a3a3a; page-break-inside: avoid; } .home-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; } .home-addr { font-size: 14px; color: #1a3a3a; font-weight: bold; } .home-cit { font-size: 10px; color: #8a7c6a; text-transform: uppercase; letter-spacing: 1px; } .home-pr { font-size: 16px; color: #c08552; font-weight: bold; } .home-specs { font-size: 11px; color: #4a5a4a; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid #e8e4d8; } .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 6px; } .lbl { font-size: 9px; color: #8a7c6a; letter-spacing: 1px; text-transform: uppercase; } .val { font-size: 13px; color: #1a3a3a; font-weight: 500; } .rooms, .note { font-size: 11px; color: #4a5a4a; margin-top: 6px; padding: 6px 10px; background: #f5f1ea; border-radius: 3px; } .ft { margin-top: 30px; padding-top: 14px; border-top: 1px solid #d4cdbe; font-size: 10px; color: #8a7c6a; text-align: center; font-style: italic; } @media print { body { background: white; } .home, .stat { background: #fafafa; } }</style></head><body><div class="head"><div><div class="brand">CRISTIAN MILLAN</div><div class="sub">Real Brokerage · Utah · Curated home portfolio</div></div><div class="for"><b>${CLIENT_NAME}</b>${today}</div></div><h2>Search overview</h2><div class="stats"><div class="stat"><div class="stat-n">${liked.length}</div><div class="stat-l">Loved</div></div><div class="stat"><div class="stat-n">${avgScore}</div><div class="stat-l">Avg score</div></div><div class="stat"><div class="stat-n">${fmtPrice(totalAvg)}</div><div class="stat-l">Avg price</div></div></div><h2>Loved homes (${liked.length})</h2>${homesHtml}<div class="ft">Prepared by Cristian Millan · Real Brokerage · Utah · cristian.gmillan@gmail.com · (801) 719-4237<br>Homes screened for Utah SB 240 ($20K). Mortgage estimates assume 5% down, 6.5% APR, 30-year term.</div><script>setTimeout(() => window.print(), 500);<\/script></body></html>`);
+  win.document.close();
+}
+
+function closeModal() { el('modal').classList.remove('active'); renderReview(); }
+
+function reset() {
+  const firstName = (CLIENT_NAMES[CLIENT_CODE] || 'this client').split(' ')[0];
+  if (!confirm(`Reset all of ${firstName}'s selections?`)) return;
+  state.liked = []; state.disliked = []; state.notes = {}; state.scores = {}; state.rooms = {}; state.compareIds = []; state.mustHaves = {}; state.viewedIds = []; state.galleryIdx = {}; state.lastAction = null; state.priorities = [];
+  save();
+  renderStack(); renderReview(); renderChecklist(); updateCounts(); updateCompareBtn(); updateChipCounts(); updateUndoBtn();
+}
+
+document.querySelectorAll('.lodge-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.lodge-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.lodge-view').forEach(v => v.classList.remove('active'));
+    tab.classList.add('active');
+    el('view-' + tab.dataset.tab).classList.add('active');
+    if (tab.dataset.tab === 'liked') renderReview();
+    if (tab.dataset.tab === 'compare') updateCompareBtn();
+    if (tab.dataset.tab === 'checklist') renderChecklist();
+    syncToSheet('TAB_VIEW', null, { tab: tab.dataset.tab });
+  });
+});
+
+document.querySelectorAll('.filter-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    state.filter = chip.dataset.filter;
+    save(); renderStack();
+  });
+});
+
+el('modal').addEventListener('click', (e) => { if (e.target.id === 'modal') closeModal(); });
+
+const lodgeApp = { swipe, openNote, openLiked, setScore, toggleRoom, saveLikedDetails, saveQuickNote, toggleCompare, clearCompare, renderComparePicker, renderCompareResults, quickCompareLast2, saveScenario, loadScenario, deleteScenario, reorderCompare, cyclePhoto, goToCompare, goToReview, openMHSelector, toggleMHPriority, movePriority, removePriority, dismissInsight, showMatchDetail, setReviewSort, scheduleShowings, toggleTheme, closeModal, reset, openMortgage, updateMort, galleryNav, exportPDF, setReviewView, reconsider, undo };
+window.lodgeApp = lodgeApp;
+
+function setupWelcomeScreen() {
+  const welcome = el('welcome-screen');
+  const input = el('welcome-code');
+  const submit = el('welcome-submit');
+  const error = el('welcome-error');
+  function tryEnter() {
+    const code = input.value.toUpperCase().trim();
+    if (!code) { error.textContent = 'Please enter your access code'; return; }
+    if (!CLIENT_NAMES[code]) { error.textContent = "Code not recognized. Contact Cristian if you need help."; return; }
+    window.location.search = '?id=' + code;
+  }
+  submit.addEventListener('click', tryEnter);
+  input.addEventListener('keydown', (e) => { if (e.key === 'Enter') tryEnter(); });
+  welcome.classList.add('visible');
+}
+
+function personalizeLoadingScreen() {
+  if (!CLIENT_CODE || !CLIENT_NAMES[CLIENT_CODE]) return;
+  const fullName = CLIENT_NAMES[CLIENT_CODE];
+  const firstName = fullName.split(' ')[0];
+  const msg = el('loading-message');
+  if (msg) msg.innerHTML = `Finding ${firstName}'s<br>dream home...`;
+  const greet = el('client-name-display');
+  if (greet) greet.textContent = fullName;
+  const desc = el('realtor-panel-desc');
+  if (desc) desc.textContent = `All of ${firstName}'s reviewed homes — both loved and passed.`;
+  document.title = `${fullName} · Home Portfolio · Cristian Millan`;
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (el('modal').classList.contains('active')) { if (e.key === 'Escape') closeModal(); return; }
+  const tabMap = { '1': 'discover', '2': 'liked', '3': 'compare', '4': 'checklist' };
+  if (tabMap[e.key]) { e.preventDefault(); const btn = document.querySelector(`.lodge-tab[data-tab="${tabMap[e.key]}"]`); if (btn) btn.click(); return; }
+});
+
+if (!CLIENT_CODE || !CLIENT_NAMES[CLIENT_CODE]) {
+  document.addEventListener('DOMContentLoaded', () => { el('loading-screen').classList.add('hidden'); setupWelcomeScreen(); });
+} else {
+  applySavedTheme();
+  personalizeLoadingScreen();
+  load();
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.toggle('active', c.dataset.filter === state.filter));
+  document.querySelectorAll('.toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.view === state.reviewView));
+  renderStack(); renderChecklist(); updateCounts(); updateCompareBtn(); updateChipCounts(); updateUndoBtn();
+  const loadingScreen = el('loading-screen');
+  const startTime = performance.now();
+  const minLoadTime = 2200;
+  window.addEventListener('load', () => { const elapsed = performance.now() - startTime; const remaining = Math.max(0, minLoadTime - elapsed); setTimeout(() => { loadingScreen.classList.add('hidden'); }, remaining); });
+  setTimeout(() => { loadingScreen.classList.add('hidden'); }, 3500);
+}
+</script>
+
+</body>
+</html>

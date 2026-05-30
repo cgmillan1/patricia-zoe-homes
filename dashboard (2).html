@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Agent Dashboard · Patricia & Zoe · Cristian Millan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@tabler/[email protected]/dist/tabler-icons.min.css" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #f0ebe0; color: #2d3e2f; padding: 16px; }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  .head { display: flex; justify-content: space-between; align-items: center; padding-bottom: 14px; border-bottom: 2px solid #1a3a3a; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+  .brand { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: #1a3a3a; letter-spacing: 1px; font-weight: 600; }
+  .brand-sub { font-size: 10px; color: #8a7c6a; letter-spacing: 2px; text-transform: uppercase; }
+  .refresh-btn { padding: 8px 14px; background: #1a3a3a; color: #d4a574; border: none; border-radius: 6px; font-size: 12px; cursor: pointer; font-family: inherit; letter-spacing: 0.5px; }
+  .refresh-btn:hover { background: #2d5050; }
+  .overlap-card { background: #fffdf7; border: 2px solid #c08552; border-radius: 12px; padding: 18px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(192,133,82,0.15); }
+  .overlap-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: #1a3a3a; font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+  .overlap-sub { font-size: 12px; color: #8a7c6a; margin-bottom: 14px; }
+  .overlap-stats { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+  .overlap-stat { flex: 1; min-width: 120px; background: #f5f1ea; border-radius: 8px; padding: 12px; text-align: center; }
+  .overlap-stat-num { font-family: 'Cormorant Garamond', serif; font-size: 28px; color: #1a3a3a; font-weight: 600; }
+  .overlap-stat-lbl { font-size: 10px; color: #8a7c6a; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 2px; }
+  .overlap-stat.match { background: rgba(45,106,58,0.1); border: 1px solid rgba(45,106,58,0.3); }
+  .overlap-stat.match .overlap-stat-num { color: #2d6a3a; }
+  .overlap-matches { display: grid; gap: 8px; }
+  .overlap-match-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: rgba(45,106,58,0.06); border-left: 3px solid #2d6a3a; border-radius: 0 6px 6px 0; }
+  .overlap-match-info { flex: 1; }
+  .overlap-match-addr { font-size: 13px; color: #1a3a3a; font-weight: 600; }
+  .overlap-match-meta { font-size: 11px; color: #8a7c6a; }
+  .overlap-match-badge { background: #2d6a3a; color: #fff; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+  .overlap-empty { font-size: 13px; color: #8a7c6a; font-style: italic; padding: 10px 0; }
+  .clients-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+  .client-card { background: #fffdf7; border: 1px solid rgba(45,62,47,0.15); border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(45,62,47,0.06); }
+  .client-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid rgba(45,62,47,0.1); }
+  .client-name { font-family: 'Cormorant Garamond', serif; font-size: 19px; color: #1a3a3a; font-weight: 600; }
+  .client-code { font-size: 10px; color: #8a7c6a; letter-spacing: 1px; }
+  .client-link { font-size: 11px; color: #c08552; text-decoration: none; }
+  .client-link:hover { text-decoration: underline; }
+  .client-stats { display: flex; gap: 8px; margin-bottom: 12px; }
+  .cstat { flex: 1; background: #f5f1ea; border-radius: 6px; padding: 8px; text-align: center; }
+  .cstat-num { font-size: 20px; color: #1a3a3a; font-weight: 700; font-family: 'Cormorant Garamond', serif; }
+  .cstat-lbl { font-size: 9px; color: #8a7c6a; letter-spacing: 0.5px; text-transform: uppercase; }
+  .home-list { display: flex; flex-direction: column; gap: 6px; }
+  .home-row { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: #faf7f0; border-radius: 6px; font-size: 12px; }
+  .home-row.loved { border-left: 3px solid #2d6a3a; }
+  .home-row.passed { border-left: 3px solid #b85a3d; opacity: 0.75; }
+  .home-row-info { flex: 1; min-width: 0; }
+  .home-row-addr { color: #1a3a3a; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .home-row-meta { font-size: 10px; color: #8a7c6a; }
+  .home-row-score { font-size: 11px; color: #c08552; font-weight: 600; }
+  .home-row-note { font-size: 10px; color: #5a6a5a; font-style: italic; margin-top: 2px; }
+  .section-label { font-size: 10px; color: #8a7c6a; letter-spacing: 1px; text-transform: uppercase; font-weight: 600; margin: 10px 0 4px; }
+  .empty { font-size: 12px; color: #8a7c6a; font-style: italic; padding: 6px 0; }
+  .export-csv { width: 100%; padding: 10px; background: #d4a574; color: #1a3a3a; border: none; border-radius: 6px; font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; cursor: pointer; font-weight: 600; margin-top: 12px; font-family: inherit; }
+  .export-csv:hover { background: #e0b585; }
+  .login { max-width: 360px; margin: 80px auto; background: #fffdf7; border: 2px solid #1a3a3a; border-radius: 12px; padding: 30px 24px; text-align: center; }
+  .login h2 { font-family: 'Cormorant Garamond', serif; color: #1a3a3a; margin-bottom: 16px; font-weight: 600; }
+  .login input { width: 100%; padding: 12px; border: 1px solid rgba(45,62,47,0.25); border-radius: 6px; font-size: 14px; margin-bottom: 12px; text-align: center; font-family: inherit; }
+  .login button { width: 100%; padding: 12px; background: #1a3a3a; color: #d4a574; border: none; border-radius: 6px; font-size: 13px; cursor: pointer; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; font-family: inherit; }
+  .login .err { color: #b85a3d; font-size: 12px; margin-top: 8px; min-height: 16px; }
+  .loading { text-align: center; padding: 40px; color: #8a7c6a; }
+  .updated-time { font-size: 10px; color: #8a7c6a; text-align: right; margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<div class="login" id="login">
+  <h2>Agent Dashboard</h2>
+  <input type="password" id="pw" placeholder="Password" />
+  <button onclick="checkLogin()">Enter</button>
+  <div class="err" id="login-err"></div>
+</div>
+
+<div class="wrap" id="dash" style="display:none">
+  <div class="head">
+    <div>
+      <div class="brand">CRISTIAN MILLAN</div>
+      <div class="brand-sub">Agent Dashboard · Patricia &amp; Zoe</div>
+    </div>
+    <button class="refresh-btn" onclick="loadAll()"><i class="ti ti-refresh"></i> Refresh</button>
+  </div>
+  <div id="overlap-area"></div>
+  <div class="clients-grid" id="clients"></div>
+</div>
+
+<script>
+const DASHBOARD_PASSWORD = 'cristian2026';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyChX2Q6q-pZr7xHDnG31Xr0hLiItQn5m-0",
+  authDomain: "cmr-home-portfolio.firebaseapp.com",
+  databaseURL: "https://cmr-home-portfolio-default-rtdb.firebaseio.com",
+  projectId: "cmr-home-portfolio",
+  storageBucket: "cmr-home-portfolio.firebasestorage.app",
+  messagingSenderId: "872375961631",
+  appId: "1:872375961631:web:4834df880c9ea45ca0ad2a"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+const CLIENT_NAMES = {
+  'PAT2026': 'Patricia',
+  'ZOE2026': 'Zoe',
+  'DEMO': 'Demo Client'
+};
+
+const HOMES_LITE = {
+  1: {address: '933 W Little Tiger Ct #555', city: 'Saratoga Springs', price: 435000, type: 'Resale'},
+  2: {address: '141 N Green River Rd', city: 'Saratoga Springs', price: 449990, type: 'Resale'},
+  3: {address: '929 W Havorsen Pkwy #224', city: 'Saratoga Springs', price: 414990, type: 'Resale'},
+  4: {address: '1341 E Goldie Lou Ln Lot 36', city: 'Eagle Mountain', price: 358767, type: 'New'},
+  5: {address: '948 S 320 E #199', city: 'Spanish Fork', price: 398803, type: 'New'},
+  6: {address: '3414 N Browning St #1512', city: 'Eagle Mountain', price: 449990, type: 'New'},
+  7: {address: '363 E Halls Creek Rd', city: 'Saratoga Springs', price: 439990, type: 'Resale'},
+  8: {address: '3412 N Willy Way Unit 6', city: 'Eagle Mountain', price: 317010, type: 'New'},
+  9: {address: 'Albright plan (Wander)', city: 'Saratoga Springs', price: 409990, type: 'New'},
+  10: {address: 'Harmony Ridge 406', city: 'Lehi area', price: 433900, type: 'New'},
+  11: {address: 'Highridge 674', city: 'Lehi area', price: 449900, type: 'New'},
+  12: {address: 'Highgrove A', city: 'American Fork', price: 456990, type: 'New'},
+  13: {address: 'Hillsborough A', city: 'American Fork', price: 499000, type: 'New'}
+};
+
+const TOTAL_HOMES = Object.keys(HOMES_LITE).length;
+let allData = {};
+
+function checkLogin() {
+  const pw = document.getElementById('pw').value;
+  if (pw === DASHBOARD_PASSWORD) {
+    sessionStorage.setItem('cmr_dash_auth', '1');
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('dash').style.display = 'block';
+    loadAll();
+  } else {
+    document.getElementById('login-err').textContent = 'Wrong password';
+  }
+}
+
+document.getElementById('pw').addEventListener('keydown', e => { if (e.key === 'Enter') checkLogin(); });
+
+if (sessionStorage.getItem('cmr_dash_auth') === '1') {
+  document.getElementById('login').style.display = 'none';
+  document.getElementById('dash').style.display = 'block';
+  loadAll();
+}
+
+const fmtFull = (p) => '$' + Math.round(p).toLocaleString();
+
+function loadAll() {
+  document.getElementById('clients').innerHTML = '<div class="loading">Loading client data...</div>';
+  document.getElementById('overlap-area').innerHTML = '';
+  db.ref('clients').once('value').then(snap => {
+    allData = snap.val() || {};
+    renderOverlap();
+    renderClients();
+  }).catch(err => {
+    document.getElementById('clients').innerHTML = '<div class="loading">Error loading data: ' + err.message + '</div>';
+  });
+}
+
+function renderOverlap() {
+  const pat = allData['PAT2026'] || {};
+  const zoe = allData['ZOE2026'] || {};
+  const patLiked = pat.liked || [];
+  const zoeLiked = zoe.liked || [];
+  const matches = patLiked.filter(id => zoeLiked.includes(id));
+
+  let matchesHTML;
+  if (matches.length === 0) {
+    matchesHTML = '<div class="overlap-empty">Aún no hay coincidencias. Cuando Patricia y Zoe amen la misma casa, aparecerá aquí.</div>';
+  } else {
+    matchesHTML = '<div class="overlap-matches">' + matches.map(id => {
+      const h = HOMES_LITE[id];
+      if (!h) return '';
+      const patScore = (pat.scores && pat.scores[id]) ? pat.scores[id] + '/10' : '-';
+      const zoeScore = (zoe.scores && zoe.scores[id]) ? zoe.scores[id] + '/10' : '-';
+      return `<div class="overlap-match-row"><div class="overlap-match-info"><div class="overlap-match-addr">${h.address}</div><div class="overlap-match-meta">${h.city} · ${fmtFull(h.price)} · Patricia ${patScore} · Zoe ${zoeScore}</div></div><span class="overlap-match-badge">Ambas ❤</span></div>`;
+    }).join('') + '</div>';
+  }
+
+  document.getElementById('overlap-area').innerHTML = `
+    <div class="overlap-card">
+      <div class="overlap-title"><i class="ti ti-heart-handshake" style="color:#c08552"></i> Coincidencias: Patricia &amp; Zoe</div>
+      <div class="overlap-sub">Casas donde las dos dijeron que sí.</div>
+      <div class="overlap-stats">
+        <div class="overlap-stat"><div class="overlap-stat-num">${patLiked.length}</div><div class="overlap-stat-lbl">Patricia amó</div></div>
+        <div class="overlap-stat"><div class="overlap-stat-num">${zoeLiked.length}</div><div class="overlap-stat-lbl">Zoe amó</div></div>
+        <div class="overlap-stat match"><div class="overlap-stat-num">${matches.length}</div><div class="overlap-stat-lbl">Coinciden</div></div>
+      </div>
+      ${matchesHTML}
+    </div>`;
+}
+
+function renderClients() {
+  const codes = Object.keys(CLIENT_NAMES);
+  let html = '';
+  codes.forEach(code => {
+    const name = CLIENT_NAMES[code];
+    const data = allData[code] || {};
+    const liked = data.liked || [];
+    const disliked = data.disliked || [];
+    const scores = data.scores || {};
+    const notes = data.notes || {};
+    const rooms = data.rooms || {};
+    const reviewed = liked.length + disliked.length;
+    const left = TOTAL_HOMES - reviewed;
+    const lastUpdated = data.lastUpdated ? new Date(data.lastUpdated).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : 'Never';
+
+    let lovedHTML = liked.length ? liked.map(id => {
+      const h = HOMES_LITE[id];
+      if (!h) return '';
+      const score = scores[id] ? `<span class="home-row-score">${scores[id]}/10</span>` : '';
+      const note = notes[id] ? `<div class="home-row-note">"${notes[id]}"</div>` : '';
+      const rm = (rooms[id] && rooms[id].length) ? ` · ${rooms[id].join(', ')}` : '';
+      return `<div class="home-row loved"><div class="home-row-info"><div class="home-row-addr">${h.address}</div><div class="home-row-meta">${h.city} · ${fmtFull(h.price)} · ${h.type}${rm}</div>${note}</div>${score}</div>`;
+    }).join('') : '<div class="empty">No loves yet</div>';
+
+    let passedHTML = disliked.length ? disliked.map(id => {
+      const h = HOMES_LITE[id];
+      if (!h) return '';
+      const note = notes[id] ? `<div class="home-row-note">"${notes[id]}"</div>` : '';
+      return `<div class="home-row passed"><div class="home-row-info"><div class="home-row-addr">${h.address}</div><div class="home-row-meta">${h.city} · ${fmtFull(h.price)}</div>${note}</div></div>`;
+    }).join('') : '<div class="empty">No passes yet</div>';
+
+    html += `
+      <div class="client-card">
+        <div class="client-head">
+          <div>
+            <div class="client-name">${name}</div>
+            <div class="client-code">${code}</div>
+          </div>
+          <a class="client-link" href="?id=${code}" onclick="event.preventDefault();window.open('index.html?id=${code}','_blank')"><i class="ti ti-external-link"></i> Open app</a>
+        </div>
+        <div class="client-stats">
+          <div class="cstat"><div class="cstat-num">${liked.length}</div><div class="cstat-lbl">Loved</div></div>
+          <div class="cstat"><div class="cstat-num">${disliked.length}</div><div class="cstat-lbl">Passed</div></div>
+          <div class="cstat"><div class="cstat-num">${left}</div><div class="cstat-lbl">Left</div></div>
+        </div>
+        <div class="section-label">❤ Loved (${liked.length})</div>
+        <div class="home-list">${lovedHTML}</div>
+        <div class="section-label">✕ Passed (${disliked.length})</div>
+        <div class="home-list">${passedHTML}</div>
+        <button class="export-csv" onclick="exportCSV('${code}')"><i class="ti ti-download"></i> Export ${name}'s CSV</button>
+        <div class="updated-time">Last activity: ${lastUpdated}</div>
+      </div>`;
+  });
+  document.getElementById('clients').innerHTML = html;
+}
+
+function exportCSV(code) {
+  const data = allData[code] || {};
+  const name = CLIENT_NAMES[code] || code;
+  const liked = data.liked || [];
+  const disliked = data.disliked || [];
+  const scores = data.scores || {};
+  const notes = data.notes || {};
+  const rooms = data.rooms || {};
+  let rows = [['Status', 'Address', 'City', 'Price', 'Type', 'Score', 'Favorite Rooms', 'Notes']];
+  liked.forEach(id => { const h = HOMES_LITE[id]; if (!h) return; rows.push(['Loved', h.address, h.city, h.price, h.type, scores[id] || '', (rooms[id] || []).join('; '), notes[id] || '']); });
+  disliked.forEach(id => { const h = HOMES_LITE[id]; if (!h) return; rows.push(['Passed', h.address, h.city, h.price, h.type, '', '', notes[id] || '']); });
+  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${name}_homes_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
