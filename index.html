@@ -91,6 +91,10 @@
   .theme-dark .sync-indicator { background: #25241e; color: #c8c4b8; border-color: rgba(232,228,216,0.15); }
   .theme-toggle { background: transparent; border: 1px solid rgba(45,62,47,0.2); border-radius: 50%; min-width: 36px; min-height: 36px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; color: #1a3a3a; font-size: 16px; -webkit-tap-highlight-color: transparent; }
   .theme-dark .theme-toggle { border-color: rgba(232,228,216,0.2); color: #d4a574; }
+  .lang-toggle { background: transparent; border: 1px solid rgba(45,62,47,0.2); border-radius: 18px; min-height: 36px; padding: 0 10px; display: inline-flex; align-items: center; gap: 4px; cursor: pointer; color: #1a3a3a; font-size: 12px; font-weight: 600; font-family: inherit; -webkit-tap-highlight-color: transparent; }
+  .lang-toggle i { font-size: 15px; }
+  .lang-toggle:active { transform: scale(0.94); }
+  .theme-dark .lang-toggle { border-color: rgba(232,228,216,0.2); color: #d4a574; }
   .theme-toggle:active { transform: scale(0.92); }
   .lodge-app { font-family: var(--font-sans); color: #2d3e2f; background: #faf7f0; min-height: 100vh; padding: 1rem; max-width: 720px; margin: 0 auto; position: relative; }
   @media (min-width: 720px) { .lodge-app { margin: 20px auto; min-height: calc(100vh - 40px); border-radius: var(--border-radius-lg); box-shadow: 0 4px 24px rgba(45,62,47,0.08); padding: 1.5rem; } }
@@ -165,6 +169,21 @@
   .home-actions-row { display: flex; gap: 6px; }
   .home-link, .home-mort { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #1a3a3a; text-decoration: none; font-weight: 500; padding: 6px 10px; background: #f5f1ea; border-radius: 4px; cursor: pointer; border: none; font-family: inherit; }
   .home-link:hover, .home-mort:hover { background: #1a3a3a; color: #faf7f0; }
+  .home-payment { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: #f5f1ea; border-left: 3px solid #2d6a3a; border-radius: 6px; padding: 8px 12px; margin-bottom: 8px; cursor: pointer; }
+  .home-payment-left { line-height: 1.2; }
+  .home-payment-label { font-size: 11px; color: #1a3a3a; font-weight: 600; }
+  .home-payment-sub { font-size: 9px; color: #2d6a3a; letter-spacing: 0.3px; }
+  .home-payment-amt { font-family: var(--font-serif); font-size: 22px; color: #1a3a3a; font-weight: 600; white-space: nowrap; }
+  .home-payment-mo { font-size: 11px; color: #8a7c6a; font-family: var(--font-sans); font-weight: 500; }
+  .home-listing-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 11px; background: #c08552; color: #fffdf7; text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 0.3px; border-radius: 6px; margin-bottom: 6px; transition: all 0.15s; box-shadow: 0 2px 6px rgba(192,133,82,0.3); }
+  .home-listing-btn:hover { background: #a86f42; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(192,133,82,0.4); }
+  .home-listing-btn i { font-size: 16px; }
+  .home-mort-link { display: flex; align-items: center; justify-content: center; gap: 5px; width: 100%; padding: 7px; background: transparent; color: #5a6a5a; border: 1px solid rgba(45,62,47,0.2); border-radius: 6px; font-size: 11px; font-family: inherit; cursor: pointer; }
+  .home-mort-link:hover { border-color: #1a3a3a; color: #1a3a3a; }
+  .theme-dark .home-payment { background: #1a1a17; }
+  .theme-dark .home-payment-label { color: #e8e4d8; }
+  .theme-dark .home-payment-amt { color: #d4a574; }
+  .theme-dark .home-mort-link { color: #a8a496; border-color: rgba(232,228,216,0.2); }
   .swipe-actions { display: flex; justify-content: center; gap: 18px; margin-top: 14px; padding: 14px; background: #fffdf7; border-radius: var(--border-radius-lg); border: 1px solid rgba(45, 62, 47, 0.15); box-shadow: 0 2px 8px rgba(45, 62, 47, 0.04); }
   @media (min-width: 480px) { .swipe-actions { gap: 24px; margin-top: 20px; padding: 16px; } }
   .swipe-btn { width: 60px; height: 60px; border-radius: 50%; border: 2px solid; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 24px; transition: all 0.15s; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
@@ -541,6 +560,7 @@
         <div class="lodge-greeting-name" id="client-name-display">Guest</div>
         <div class="lodge-greeting-sub">Your home journey</div>
       </div>
+      <button class="lang-toggle" id="lang-toggle" onclick="lodgeApp.toggleLang()" aria-label="Change language"><i class="ti ti-language"></i><span id="lang-label">ES</span></button>
       <button class="theme-toggle" id="theme-toggle" onclick="lodgeApp.toggleTheme()" aria-label="Toggle dark mode"><i class="ti ti-moon" id="theme-icon" aria-hidden="true"></i></button>
     </div>
   </div>
@@ -628,108 +648,108 @@
 // ============================================================================
 const HOMES = [
   {
-    id: 1, address: '933 W Little Tiger Ct #555', city: 'Saratoga Springs',
-    construction: 'resale', price: 435000, beds: 3, baths: 3, sqft: 2463, lot: 'Townhome',
-    taxRate: 0.0055, hoa: 75,
-    features: ['✅ Califica Utah SB 240 ($20K)', 'Never-occupied (verificar)'],
-    imgs: ['images/house1-1.png', 'images/house1-2.png', 'images/house1-3.png'],
-    url: 'https://www.zillow.com/homedetails/933-W-Little-Tiger-Ct-555-Saratoga-Springs-UT-84045/2054460260_zpid/'
-  },
-  {
-    id: 2, address: '141 N Green River Rd', city: 'Saratoga Springs',
+    id: 1, address: '141 N Green River Rd', city: 'Saratoga Springs',
     construction: 'resale', price: 449990, beds: 3, baths: 3, sqft: 1672, lot: 'Single-family',
     taxRate: 0.0055, hoa: 75,
     features: ['✅ Califica Utah SB 240 ($20K)', 'Never-occupied (verificar)'],
-    imgs: ['images/house2-1.png', 'images/house2-2.png', 'images/house2-3.png'],
+    imgs: ['images/house1-1.png', 'images/house1-2.png', 'images/house1-3.png'],
     url: 'https://www.zillow.com/homedetails/141-N-Green-River-Rd-Saratoga-Springs-UT-84045/461973473_zpid/'
   },
   {
-    id: 3, address: '929 W Havorsen Pkwy #224', city: 'Saratoga Springs',
+    id: 2, address: '929 W Havorsen Pkwy #224', city: 'Saratoga Springs',
     construction: 'resale', price: 414990, beds: 3, baths: 3, sqft: 1826, lot: 'Townhome',
     taxRate: 0.0055, hoa: 75,
     features: ['✅ Califica Utah SB 240 ($20K)', 'Never-occupied (verificar)'],
-    imgs: ['images/house3-1.png', 'images/house3-2.png', 'images/house3-3.png'],
+    imgs: ['images/house2-1.png', 'images/house2-2.png', 'images/house2-3.png'],
     url: 'https://www.zillow.com/homedetails/929-W-Havorsen-Pkwy-224-Saratoga-Springs-UT-84043/462640149_zpid/'
   },
   {
-    id: 4, address: '1341 E Goldie Lou Ln Lot 36', city: 'Eagle Mountain',
+    id: 3, address: '1341 E Goldie Lou Ln Lot 36', city: 'Eagle Mountain',
     construction: 'new', price: 358767, beds: 3, baths: 3, sqft: 1775, lot: 'Single-family',
     taxRate: 0.0055, hoa: 75,
     features: ['✅ Califica Utah SB 240 ($20K)', 'Construcción nueva'],
-    imgs: ['images/house4-1.png', 'images/house4-2.png', 'images/house4-3.png'],
+    imgs: ['images/house3-1.png', 'images/house3-2.png', 'images/house3-3.png'],
     url: 'https://www.zillow.com/homedetails/1341-E-Goldie-Lou-Ln-LOT-36-Eagle-Mountain-UT-84005/462761623_zpid/'
   },
   {
-    id: 5, address: '948 S 320 E #199', city: 'Spanish Fork',
+    id: 4, address: '948 S 320 E #199', city: 'Spanish Fork',
     construction: 'new', price: 398803, beds: 3, baths: 3, sqft: 1813, lot: 'Townhome',
     taxRate: 0.0055, hoa: 75,
     features: ['✅ Califica Utah SB 240 ($20K)', 'Construcción nueva'],
-    imgs: ['images/house5-1.png', 'images/house5-2.png', 'images/house5-3.png'],
+    imgs: ['images/house4-1.png', 'images/house4-2.png', 'images/house4-3.png'],
     url: 'https://www.zillow.com/homedetails/948-S-320-E-199-Spanish-Fork-UT-84660/462748475_zpid/'
   },
   {
-    id: 6, address: '3414 N Browning St #1512', city: 'Eagle Mountain',
-    construction: 'new', price: 449990, beds: 3, baths: 3, sqft: 2339, lot: 'Single-family',
-    taxRate: 0.0055, hoa: 75,
-    features: ['✅ Califica Utah SB 240 ($20K)', 'Construcción nueva'],
-    imgs: ['images/house6-1.png', 'images/house6-2.png', 'images/house6-3.png'],
-    url: 'https://www.zillow.com/homedetails/3414-N-Browning-St-1512-Eagle-Mountain-UT-84005/462743892_zpid/'
-  },
-  {
-    id: 7, address: '363 E Halls Creek Rd', city: 'Saratoga Springs',
+    id: 5, address: '363 E Halls Creek Rd', city: 'Saratoga Springs',
     construction: 'resale', price: 439990, beds: 3, baths: 3, sqft: 1442, lot: 'Single-family',
     taxRate: 0.0055, hoa: 75,
     features: ['✅ Califica Utah SB 240 ($20K)', 'Never-occupied (verificar)'],
-    imgs: ['images/house7-1.png', 'images/house7-2.png', 'images/house7-3.png'],
+    imgs: ['images/house5-1.png', 'images/house5-2.png', 'images/house5-3.png'],
     url: 'https://www.zillow.com/homedetails/363-E-Halls-Creek-Rd-Saratoga-Springs-UT-84045/462110743_zpid/'
   },
   {
-    id: 8, address: '3412 N Willy Way Unit 6', city: 'Eagle Mountain',
+    id: 6, address: '3412 N Willy Way Unit 6', city: 'Eagle Mountain',
     construction: 'new', price: 317010, beds: 3, baths: 2, sqft: 1277, lot: 'Townhome',
     taxRate: 0.0055, hoa: 75,
     features: ['✅ Califica Utah SB 240 ($20K)', 'Construcción nueva'],
-    imgs: ['images/house8-1.png', 'images/house8-2.png', 'images/house8-3.png'],
+    imgs: ['images/house6-1.png', 'images/house6-2.png', 'images/house6-3.png'],
     url: 'https://www.zillow.com/homedetails/3412-N-Willy-Way-UNIT-6-Eagle-Mountain-UT-84005/461626799_zpid/'
   },
   {
-    id: 9, address: 'Albright plan (Wander)', city: 'Saratoga Springs',
+    id: 7, address: 'Albright plan (Wander)', city: 'Saratoga Springs',
     construction: 'new', price: 409990, beds: 3, baths: 2, sqft: 1311, lot: 'Townhome',
     taxRate: 0.0055, hoa: 75,
     features: ['✅ Califica Utah SB 240 ($20K)', 'D.R. Horton'],
-    imgs: ['images/house9-1.png', 'images/house9-2.png', 'images/house9-3.png'],
+    imgs: ['images/house7-1.png', 'images/house7-2.png', 'images/house7-3.png'],
     url: 'https://www.zillow.com/community/wander/456640473_zpid/'
   },
   {
-    id: 10, address: 'Harmony Ridge 406', city: 'Lehi area',
+    id: 8, address: 'Harmony Ridge 406', city: 'Lehi area',
     construction: 'new', price: 433900, beds: 3, baths: 2.5, sqft: 1618, lot: 'Townhome',
     taxRate: 0.0055, hoa: 75,
     features: ['✅ Califica Utah SB 240 ($20K)', 'EdgeHomes'],
-    imgs: ['images/house10-1.png', 'images/house10-2.png', 'images/house10-3.png'],
+    imgs: ['images/house8-1.png', 'images/house8-2.png', 'images/house8-3.png'],
     url: 'https://www.edgehomes.com/quick_move_ins/harmony-ridge-406/'
   },
   {
-    id: 11, address: 'Highridge 674', city: 'Lehi area',
+    id: 9, address: 'Highridge 674', city: 'Lehi area',
     construction: 'new', price: 449900, beds: 3, baths: 2.5, sqft: 1647, lot: 'Townhome',
     taxRate: 0.0055, hoa: 75,
     features: ['✅ Califica Utah SB 240 ($20K)', 'EdgeHomes'],
-    imgs: ['images/house11-1.png', 'images/house11-2.png', 'images/house11-3.png'],
+    imgs: ['images/house9-1.png', 'images/house9-2.png', 'images/house9-3.png'],
     url: 'https://www.edgehomes.com/quick_move_ins/highridge-674/'
   },
   {
-    id: 12, address: 'Highgrove A', city: 'American Fork',
+    id: 10, address: 'Highgrove A', city: 'American Fork',
     construction: 'new', price: 456990, beds: 3, baths: 3, sqft: 1827, lot: 'Townhome',
     taxRate: 0.0055, hoa: 75,
     features: ['⚠️ Negociar bajo $450K para SB 240', 'Woodside'],
-    imgs: ['images/house12-1.png', 'images/house12-2.png', 'images/house12-3.png'],
+    imgs: ['images/house10-1.png', 'images/house10-2.png', 'images/house10-3.png'],
     url: 'https://www.woodsidehomes.com/findmyhome/utah/american-fork/regency-at-meadowbrook/highgrove-a'
   },
   {
-    id: 13, address: 'Hillsborough A', city: 'American Fork',
+    id: 11, address: 'Hillsborough A', city: 'American Fork',
     construction: 'new', price: 499000, beds: 3, baths: 3, sqft: 2021, lot: 'Townhome',
     taxRate: 0.0055, hoa: 75,
     features: ['⚠️ Negociar bajo $450K para SB 240', 'Woodside'],
-    imgs: ['images/house13-1.png', 'images/house13-2.png', 'images/house13-3.png'],
+    imgs: ['images/house11-1.png', 'images/house11-2.png', 'images/house11-3.png'],
     url: 'https://www.woodsidehomes.com/findmyhome/utah/american-fork/regency-at-meadowbrook/hillsborough-a'
+  },
+  {
+    id: 12, address: 'McKinley Lot 0425', city: 'American Fork',
+    construction: 'new', price: 425000, beds: 3, baths: 2.5, sqft: 1580, lot: 'Townhome',
+    taxRate: 0.0055, hoa: 75,
+    features: ['✅ Califica Utah SB 240 ($20K)', 'Woodside', 'Move-in ready', '📐 Sqft a confirmar'],
+    imgs: ['images/house12-1.png', 'images/house12-2.png', 'images/house12-3.png'],
+    url: 'https://www.woodsidehomes.com/findmyhome/utah/american-fork/legacy-at-meadowbrook/mckinley-or-lot-0425'
+  },
+  {
+    id: 13, address: 'Madison A', city: 'American Fork',
+    construction: 'new', price: 430000, beds: 3, baths: 2.5, sqft: 1580, lot: 'Townhome',
+    taxRate: 0.0055, hoa: 75,
+    features: ['✅ Califica Utah SB 240 ($20K)', 'Woodside', 'Loft + great room'],
+    imgs: ['images/house13-1.png', 'images/house13-2.png', 'images/house13-3.png'],
+    url: 'https://www.woodsidehomes.com/findmyhome/utah/american-fork/legacy-at-meadowbrook/madison-a'
   }
 ];
 
@@ -769,11 +789,92 @@ const CLIENT_CODE = (urlParams.get('id') || '').toUpperCase().trim();
 
 const CLIENT_NAMES = {
   'PAT2026': 'Patricia',
-  'ZOE2026': 'Zoe',
-  'DEMO': 'Demo Client'
+  'ZOE2026': 'Zoe'
 };
 
 const CLIENT_NAME = CLIENT_NAMES[CLIENT_CODE] || 'Guest';
+
+// ============================ i18n (EN / ES) ============================
+const I18N = {
+  en: {
+    tagDiscover: 'Discover', tagReviewed: 'Reviewed', tagMustHaves: 'Must-Haves', tagCompare: 'Compare',
+    journeySub: 'Your home journey',
+    sb240Banner: '🏷️ <b>Utah SB 240:</b> These homes qualify for the $20,000 incentive (0% deferred down-payment loan, new homes up to $450K). Ask Cristian for details.',
+    filterAll: 'All', filterNew: 'New Construction', filterResale: 'Resale',
+    swipeHint: 'Swipe or tap a button below',
+    pass: 'Pass', note: 'Note', love: 'Love',
+    estMonthly: 'Estimated payment', with20k: 'with $20K SB 240 incentive', viewListing: 'View full listing', adjustMortgage: 'Adjust mortgage',
+    perMo: '/mo',
+    undo: 'Undo',
+    forCristian: "For Cristian's Eyes", reviewedDesc: 'All reviewed homes — both loved and passed.',
+    loved: 'Loved', passed: 'Passed', avgLoved: 'Avg Loved',
+    exportSummary: 'Export client summary (PDF)',
+    newBuild: 'New Build', resale: 'Resale',
+    bd: 'bd', ba: 'ba', sf: 'sf',
+    langName: 'English'
+  },
+  es: {
+    tagDiscover: 'Explorar', tagReviewed: 'Revisadas', tagMustHaves: 'Prioridades', tagCompare: 'Comparar',
+    journeySub: 'Tu búsqueda de casa',
+    sb240Banner: '🏷️ <b>Utah SB 240:</b> Estas casas califican para el incentivo de $20,000 (préstamo diferido al 0% para el enganche, casas nuevas hasta $450K). Pregúntale a Cristian.',
+    filterAll: 'Todas', filterNew: 'Construcción nueva', filterResale: 'Reventa',
+    swipeHint: 'Desliza o toca un botón abajo',
+    pass: 'No', note: 'Nota', love: 'Me gusta',
+    estMonthly: 'Pago estimado', with20k: 'con $20K incentivo SB 240', viewListing: 'Ver el listing completo', adjustMortgage: 'Ajustar hipoteca',
+    perMo: '/mes',
+    undo: 'Deshacer',
+    forCristian: 'Para Cristian', reviewedDesc: 'Todas las casas revisadas — me gustan y descartadas.',
+    loved: 'Me gusta', passed: 'Descartadas', avgLoved: 'Prom. fav.',
+    exportSummary: 'Exportar resumen (PDF)',
+    newBuild: 'Nueva', resale: 'Reventa',
+    bd: 'rec', ba: 'baño', sf: 'pc',
+    langName: 'Español'
+  }
+};
+
+function getLang() {
+  try { const s = localStorage.getItem('cmr_lang'); if (s) return s; } catch(e) {}
+  const nav = (navigator.language || 'en').toLowerCase();
+  return nav.startsWith('es') ? 'es' : 'en';
+}
+let LANG = getLang();
+function t(key) { return (I18N[LANG] && I18N[LANG][key]) || (I18N.en[key] || key); }
+function setLang(l) {
+  LANG = l;
+  try { localStorage.setItem('cmr_lang', l); } catch(e) {}
+  applyStaticI18n();
+  renderStack(); renderReview(); renderChecklist(); updateCompareBtn();
+  const lbl = el('lang-label'); if (lbl) lbl.textContent = LANG === 'es' ? 'EN' : 'ES';
+}
+function toggleLang() { setLang(LANG === 'es' ? 'en' : 'es'); }
+
+function applyStaticI18n() {
+  document.querySelectorAll('[data-tab]').forEach(tab => {
+    const map = { discover: 'tagDiscover', liked: 'tagReviewed', checklist: 'tagMustHaves', compare: 'tagCompare' };
+    const key = map[tab.dataset.tab];
+    if (key) { const countEl = tab.querySelector('.lodge-tab-count'); const countHTML = countEl ? countEl.outerHTML : ''; tab.innerHTML = t(key) + (countHTML ? ' ' + countHTML : ''); }
+  });
+  const setTxt = (sel, key) => { const e = document.querySelector(sel); if (e) e.innerHTML = t(key); };
+  setTxt('.lodge-greeting-sub', 'journeySub');
+  const banner = document.querySelector('.sb240-banner'); if (banner) banner.innerHTML = t('sb240Banner');
+  const fAll = document.querySelector('.filter-chip[data-filter="all"]'); if (fAll) fAll.innerHTML = t('filterAll') + ' <span class="chip-count" id="chip-all">' + (el('chip-all') ? el('chip-all').textContent : '0') + '</span>';
+  const fNew = document.querySelector('.filter-chip[data-filter="new"]'); if (fNew) fNew.innerHTML = t('filterNew') + ' <span class="chip-count" id="chip-new">' + (el('chip-new') ? el('chip-new').textContent : '0') + '</span>';
+  const fResale = document.querySelector('.filter-chip[data-filter="resale"]'); if (fResale) fResale.innerHTML = t('filterResale') + ' <span class="chip-count" id="chip-resale">' + (el('chip-resale') ? el('chip-resale').textContent : '0') + '</span>';
+  const hint = document.querySelector('.swipe-hint'); if (hint) hint.textContent = t('swipeHint');
+  document.querySelectorAll('.swipe-btn-label').forEach((e, i) => { e.textContent = [t('pass'), t('note'), t('love')][i] || e.textContent; });
+  const rp = document.querySelector('.realtor-panel h3'); if (rp) rp.textContent = t('forCristian');
+  const firstName = (CLIENT_NAME || '').split(' ')[0];
+  const rpDesc = el('realtor-panel-desc');
+  if (rpDesc) rpDesc.textContent = LANG === 'es' ? `Todas las casas revisadas de ${firstName} — favoritas y descartadas.` : `All of ${firstName}'s reviewed homes — both loved and passed.`;
+  const lv = document.querySelector('.toggle-btn.loved'); if (lv) lv.innerHTML = '<i class="ti ti-heart"></i> ' + t('loved');
+  const ps = document.querySelector('.toggle-btn.passed'); if (ps) ps.innerHTML = '<i class="ti ti-x"></i> ' + t('passed');
+  const exp = document.querySelector('.export-btn'); if (exp) exp.innerHTML = '<i class="ti ti-download"></i> ' + t('exportSummary');
+  const statLabels = document.querySelectorAll('.realtor-stats .stat-lbl');
+  if (statLabels[0]) statLabels[0].textContent = t('loved');
+  if (statLabels[1]) statLabels[1].textContent = t('passed');
+  if (statLabels[2]) statLabels[2].textContent = t('avgLoved');
+  updateChipCounts();
+}
 
 const SHEETS_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbwBVU7QgVZiu6sPpkCzVEuTLANb2tY2KD7j1TIXwUgEYGtGGX2-B62YaftvWgPMQlVk/exec';
 
@@ -908,6 +1009,20 @@ function calcMortgage(price, downPct, rate, years) {
   return { dp, principal, pi, n };
 }
 
+// SB 240 estimate: $20,000 fixed down, 6.5% / 30yr, + tax + insurance + PMI + HOA
+function sb240Monthly(h) {
+  const down = 20000;
+  const principal = h.price - down;
+  const r = 6.5 / 100 / 12;
+  const n = 30 * 12;
+  const pi = principal * (r * Math.pow(1+r, n)) / (Math.pow(1+r, n) - 1);
+  const tax = h.price * h.taxRate / 12;
+  const ins = h.price * 0.0040 / 12;
+  const ltv = principal / h.price;
+  const pmi = ltv > 0.80 ? principal * 0.0055 / 12 : 0; // PMI when <20% down
+  return Math.round(pi + tax + ins + pmi + (h.hoa || 0));
+}
+
 function getQueue() {
   return HOMES.filter(h => {
     if (state.viewedIds.includes(h.id)) return false;
@@ -967,16 +1082,21 @@ function renderStack() {
         <div class="home-address">${h.address}</div>
         <div class="home-city">${h.city}</div>
         <div class="home-specs">
-          <div class="spec"><i class="ti ti-bed"></i>${h.beds} bd</div>
-          <div class="spec"><i class="ti ti-bath"></i>${h.baths} ba</div>
-          <div class="spec"><i class="ti ti-ruler"></i>${h.sqft.toLocaleString()} sf</div>
+          <div class="spec"><i class="ti ti-bed"></i>${h.beds} ${t('bd')}</div>
+          <div class="spec"><i class="ti ti-bath"></i>${h.baths} ${t('ba')}</div>
+          <div class="spec"><i class="ti ti-ruler"></i>${h.sqft.toLocaleString()} ${t('sf')}</div>
           <div class="spec"><i class="ti ti-home"></i>${h.lot}</div>
         </div>
         <div class="home-features">${h.features.map(f => `<span class="feature-tag">${f}</span>`).join('')}</div>
-        <div class="home-actions-row">
-          <button class="home-mort" onclick="event.stopPropagation();lodgeApp.openMortgage(${h.id})"><i class="ti ti-calculator"></i> Mortgage</button>
-          <a class="home-link" href="${h.url}" target="_blank" rel="noopener"><i class="ti ti-external-link"></i> Listing</a>
+        <div class="home-payment" onclick="event.stopPropagation();lodgeApp.openMortgage(${h.id})">
+          <div class="home-payment-left">
+            <div class="home-payment-label">${t('estMonthly')}</div>
+            <div class="home-payment-sub">${t('with20k')}</div>
+          </div>
+          <div class="home-payment-amt">$${sb240Monthly(h).toLocaleString()}<span class="home-payment-mo">${t('perMo')}</span></div>
         </div>
+        <a class="home-listing-btn" href="${h.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><i class="ti ti-external-link"></i> ${t('viewListing')}</a>
+        <button class="home-mort-link" onclick="event.stopPropagation();lodgeApp.openMortgage(${h.id})"><i class="ti ti-calculator"></i> ${t('adjustMortgage')}</button>
       </div>
     </div>`;
   }).join('');
@@ -1541,7 +1661,7 @@ document.querySelectorAll('.filter-chip').forEach(chip => {
 
 el('modal').addEventListener('click', (e) => { if (e.target.id === 'modal') closeModal(); });
 
-const lodgeApp = { swipe, openNote, openLiked, setScore, toggleRoom, saveLikedDetails, saveQuickNote, toggleCompare, clearCompare, renderComparePicker, renderCompareResults, quickCompareLast2, saveScenario, loadScenario, deleteScenario, reorderCompare, cyclePhoto, goToCompare, goToReview, openMHSelector, toggleMHPriority, movePriority, removePriority, dismissInsight, showMatchDetail, setReviewSort, scheduleShowings, toggleTheme, closeModal, reset, openMortgage, updateMort, galleryNav, exportPDF, setReviewView, reconsider, undo };
+const lodgeApp = { swipe, openNote, openLiked, setScore, toggleRoom, saveLikedDetails, saveQuickNote, toggleCompare, clearCompare, renderComparePicker, renderCompareResults, quickCompareLast2, saveScenario, loadScenario, deleteScenario, reorderCompare, cyclePhoto, goToCompare, goToReview, openMHSelector, toggleMHPriority, movePriority, removePriority, dismissInsight, showMatchDetail, setReviewSort, scheduleShowings, toggleTheme, closeModal, reset, openMortgage, updateMort, galleryNav, exportPDF, setReviewView, reconsider, undo, toggleLang, setLang };
 window.lodgeApp = lodgeApp;
 
 function setupWelcomeScreen() {
@@ -1586,6 +1706,8 @@ if (!CLIENT_CODE || !CLIENT_NAMES[CLIENT_CODE]) {
   applySavedTheme();
   personalizeLoadingScreen();
   load();
+  const langLbl = el('lang-label'); if (langLbl) langLbl.textContent = LANG === 'es' ? 'EN' : 'ES';
+  applyStaticI18n();
   document.querySelectorAll('.filter-chip').forEach(c => c.classList.toggle('active', c.dataset.filter === state.filter));
   document.querySelectorAll('.toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.view === state.reviewView));
   renderStack(); renderChecklist(); updateCounts(); updateCompareBtn(); updateChipCounts(); updateUndoBtn();
